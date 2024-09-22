@@ -1,0 +1,112 @@
+@use './value.scss';
+
+#layout {
+  position: relative;
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 7dvh;
+    padding: 5px;
+    background-image: linear-gradient(to bottom, value.$lightColor, value.$lightBrown);
+
+    img {
+      height: 5dvh;
+    }
+    #aside-menu-btn {
+      position: relative; //讓z-index起作用
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      overflow-y: hidden; //避免旋轉時短暫跑出下拉卷軸
+      z-index: 1;
+      #aside-menu-pic {
+        transition: value.$transitionTime;
+        &.rotated {
+          rotate: 0.25turn;
+        }
+      }
+    }
+  }
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 5dvh;
+    padding: 10px;
+    background-image: linear-gradient(to bottom, value.$middleBrown, value.$darkBrown);
+    img,
+    p {
+      filter: invert(1);
+    }
+    img {
+      height: 5dvh;
+    }
+    #copyright {
+      text-align: center;
+    }
+  }
+  aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: absolute;
+    right: 0;
+    top: 7dvh;
+    height: 100dvh;
+    width: 0;
+    opacity: 0;
+    background-image: linear-gradient(to bottom, value.$lightColor, value.$lightBrown);
+    transition: value.$transitionTime;
+    &.active {
+      width: 100vw;
+      opacity: 1;
+    }
+    * {
+      margin: 10px;
+      text-align: end;
+      white-space: nowrap;
+      text-decoration: none;
+      color: value.$darkBrown;
+    }
+  }
+}
+@media screen and (max-width: 576px) {
+  #layout {
+    header {
+      img[alt]:not([alt='logo'], [alt='aside-menu-pic']) {
+        //屬性不等於...的寫法
+        display: none;
+      }
+      #aside-menu-btn {
+        display: inline;
+      }
+    }
+    footer {
+      flex-direction: column;
+      :not(img) {
+        margin: 5px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  #layout {
+    footer {
+      flex-direction: column;
+      :not(img) {
+        margin: 5px;
+      }
+    }
+  }
+}
+
+/* @media screen and (min-width: 768px) and (max-width: 992px) {
+  
+}
+
+@media screen and (min-width: 992px) and (max-width: 1400px) {
+ 
+} */

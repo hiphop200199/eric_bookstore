@@ -1,0 +1,85 @@
+@use './value.scss';
+
+#layout {
+  main {
+    min-height: 90dvh;
+    #detail-container {
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      * {
+        margin: 5px;
+      }
+      img {
+        width: clamp(450px, 50%, 550px);
+      }
+      #info {
+        width: clamp(400px, 45%, 500px);
+
+        #detail-title {
+          font-size: value.$extraLargeFontSize;
+        }
+        p {
+          font-size: value.$largeFontSize;
+        }
+        #buttons {
+          button {
+            background-image: linear-gradient(to bottom, value.$middleBrown, value.$darkBrown);
+            border: none;
+            border-radius: value.$radius;
+            color: value.$lightColor;
+            padding: 5px;
+            margin: 5px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  #layout {
+    main {
+      #detail-container {
+        flex-direction: column;
+        img {
+          width: 100%;
+        }
+        #info {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  #layout {
+    main {
+      #detail-container {
+        flex-direction: column;
+        img {
+          width: 100%;
+        }
+        #info {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  #layout {
+    main {
+    }
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1400px) {
+  #layout {
+    main {
+    }
+  }
+}
