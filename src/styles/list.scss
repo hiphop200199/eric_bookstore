@@ -40,9 +40,13 @@
         height: 400px;
         border-radius: value.$radius;
         border: 3px solid value.$middleBrown;
-        .product-cover {
+        a {
           height: 80%;
-          border-radius: value.$radius;
+          overflow-y: hidden;
+          .product-cover {
+            height: 100%;
+            border-radius: value.$radius;
+          }
         }
       }
     }

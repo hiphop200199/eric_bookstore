@@ -55,5 +55,6 @@ const toggleAsideMenu = () => {
       </section>
       <router-link v-else to="/">登入</router-link>
     </aside>
+    <a href="#" id="to-top"><img src="../assets/up-arrow.png" alt="" /></a>
   </div>
 </template>
