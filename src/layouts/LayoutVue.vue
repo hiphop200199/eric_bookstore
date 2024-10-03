@@ -15,7 +15,7 @@ const toggleAsideMenu = () => {
 <template>
   <div id="layout">
     <header>
-      <router-link to="/"><img src="../assets/book.png" alt="logo" /></router-link>
+      <a href="/"><img src="../assets/book.png" alt="logo" /></a>
       <nav>
         <section v-if="isLogin">
           <router-link to="/"><img src="../assets/log-out.png" alt="" id="logout" /></router-link>
@@ -40,7 +40,7 @@ const toggleAsideMenu = () => {
     </header>
     <router-view />
     <footer>
-      <router-link to="/"><img src="../assets/book.png" alt="logo" /></router-link>
+      <a href="/"><img src="../assets/book.png" alt="logo" /></a>
       <p id="copyright">Copyright © Reading 2024 | All Rights Reserved.</p>
       <a href="https://www.instagram.com/" target="_blank"
         ><img src="../assets/instagram.png" alt="" id="instagram"

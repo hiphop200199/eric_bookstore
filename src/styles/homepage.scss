@@ -1,0 +1,122 @@
+@use './value.scss';
+
+#layout {
+  #homepage-container {
+    position: relative;
+    min-height: 90dvh;
+    padding: 0 6rem;
+    background-color: value.$lightColor;
+    #img-auto-slide {
+      display: block;
+      width: 100%;
+      height: 75dvh;
+      object-fit: cover;
+      animation-name: img-auto-slide;
+      animation-duration: 60s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+    h1 {
+      margin-block: 50px;
+      font-size: 70px;
+      text-align: center;
+      color: value.$darkBrown;
+    }
+    #new-items-slider {
+    }
+    h2 {
+      margin-bottom: 50px;
+      font-size: 50px;
+      text-align: center;
+      color: value.$darkBrown;
+    }
+    #feedbacks {
+      margin-bottom: 50px;
+      padding: 0 6rem;
+      columns: 5;
+      column-gap: 5px;
+      .feedback-card {
+        padding: 0.375rem;
+        display: flex;
+        flex-direction: column;
+        break-inside: avoid;
+        //border-radius: value.$radius;
+        border: 2px solid value.$darkBrown;
+        box-shadow: 0px 0px 3px 1px value.$darkBrown;
+        img {
+          align-self: center;
+          border-radius: 50%;
+          width: 3rem;
+          height: 3rem;
+          object-fit: cover;
+        }
+      }
+    }
+    #to-search {
+      margin-bottom: 50px;
+      height: 60dvh;
+      h3 {
+        font-size: 50px;
+        text-align: center;
+        color: value.$darkBrown;
+      }
+      p {
+        font-size: 35px;
+        text-align: center;
+        color: value.$darkBrown;
+      }
+      a {
+        text-decoration: none;
+        font-size: 25px;
+        border-radius: value.$radius;
+        background-color: value.$darkBrown;
+        color: white;
+        padding: 5px;
+      }
+      img {
+        width: 30%;
+        height: auto;
+      }
+    }
+  }
+}
+
+@keyframes img-auto-slide {
+  0%,
+  9% {
+    opacity: 1;
+    content: value.$img1;
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    opacity: 0;
+  }
+  11%,
+  29% {
+    opacity: 1;
+    content: value.$img2;
+  }
+  31%,
+  49% {
+    opacity: 1;
+    content: value.$img3;
+  }
+  51%,
+  69% {
+    opacity: 1;
+    content: value.$img4;
+  }
+  71%,
+  89% {
+    opacity: 1;
+    content: value.$img5;
+  }
+  91%,
+  100% {
+    opacity: 1;
+    content: value.$img1;
+  }
+}
