@@ -23,6 +23,73 @@
       color: value.$darkBrown;
     }
     #new-items-slider {
+      position: relative;
+      height: 50dvh;
+
+      #slide-left {
+        position: absolute;
+        left: 0;
+        top: calc(25dvh - 1rem);
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 1;
+        &:hover {
+          transform: translateX(0.5rem);
+        }
+        img {
+          height: 2rem;
+          width: 2rem;
+        }
+      }
+      #cards {
+        position: relative;
+        width: calc(clamp(300px, 90%, 380px) * 8);
+        height: 50dvh;
+        transition: 0.3s;
+        .product-card {
+          position: absolute;
+          left: 0;
+          top: calc(25dvh - 200px);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          transition: 0.3s;
+          width: clamp(300px, 90%, 380px);
+          height: 400px;
+          a {
+            height: 90%;
+            overflow-y: hidden;
+
+            .product-cover {
+              height: 100%;
+              transition: 0.3s;
+              &:hover {
+                scale: 1.1;
+              }
+            }
+          }
+        }
+      }
+
+      #slide-right {
+        position: absolute;
+        right: 0;
+        top: calc(25dvh - 1rem);
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        &:hover {
+          transform: translateX(-0.5rem);
+        }
+        img {
+          height: 2rem;
+          width: 2rem;
+        }
+      }
     }
     h2 {
       margin-bottom: 50px;
@@ -53,14 +120,17 @@
       }
     }
     #to-search {
-      margin-bottom: 50px;
-      height: 60dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 50px;
       h3 {
         font-size: 50px;
         text-align: center;
         color: value.$darkBrown;
       }
       p {
+        margin-bottom: 50px;
         font-size: 35px;
         text-align: center;
         color: value.$darkBrown;
@@ -68,14 +138,25 @@
       a {
         text-decoration: none;
         font-size: 25px;
-        border-radius: value.$radius;
         background-color: value.$darkBrown;
         color: white;
         padding: 5px;
       }
-      img {
-        width: 30%;
-        height: auto;
+      #pic-and-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation-name: show;
+        animation-fill-mode: forwards;
+        animation-timeline: view();
+        animation-range-end: 50%;
+        * {
+          margin-inline: 20px;
+        }
+        img {
+          width: 30%;
+          height: auto;
+        }
       }
     }
   }
@@ -118,5 +199,19 @@
   100% {
     opacity: 1;
     content: value.$img1;
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@for $i from 1 through 8 {
+  #layout #homepage-container #new-items-slider #cards .product-card:nth-of-type(#{$i}) {
+    transform: translateX(calc((clamp(300px, 90%, 380px) * ($i - 1)) + 250px));
   }
 }
