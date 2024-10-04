@@ -20,6 +20,7 @@
       font-size: 70px;
       text-align: center;
       color: value.$darkBrown;
+      text-wrap: pretty;
     }
     #ambiguous-search {
       display: block;
@@ -59,6 +60,7 @@
 @media screen and (max-width: 576px) {
   #layout {
     main {
+      padding: 0 0.5rem;
       #product-container {
         display: flex;
         flex-direction: column;
@@ -71,6 +73,7 @@
 @media screen and (min-width: 576px) and (max-width: 768px) {
   #layout {
     main {
+      padding: 0 1rem;
       #product-container {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -81,6 +84,7 @@
 @media screen and (min-width: 768px) and (max-width: 992px) {
   #layout {
     main {
+      padding: 0 1.5rem;
       #product-container {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -91,6 +95,7 @@
 @media screen and (min-width: 992px) and (max-width: 1440px) {
   #layout {
     main {
+      padding: 0 3rem;
       #product-container {
         grid-template-columns: repeat(3, 1fr);
       }

@@ -4,12 +4,12 @@
   #homepage-container {
     position: relative;
     min-height: 90dvh;
-    padding: 0 6rem;
     background-color: value.$lightColor;
     #img-auto-slide {
       display: block;
       width: 100%;
       height: 75dvh;
+      padding: 0 6rem;
       object-fit: cover;
       animation-name: img-auto-slide;
       animation-duration: 60s;
@@ -25,49 +25,50 @@
     #new-items-slider {
       position: relative;
       height: 50dvh;
-
+      overflow: hidden;
       #slide-left {
         position: absolute;
-        left: 0;
+        left: 1rem;
         top: calc(25dvh - 1rem);
         background: none;
         border: none;
         cursor: pointer;
-        transition: 0.3s;
-        z-index: 1;
-        &:hover {
-          transform: translateX(0.5rem);
-        }
         img {
           height: 2rem;
           width: 2rem;
         }
       }
-      #cards {
+      #slider {
+        width: calc(clamp(300px, 90%, 380px) * 3);
         position: relative;
-        width: calc(clamp(300px, 90%, 380px) * 8);
+        left: calc(50% - clamp(300px, 90%, 380px) * 1.5);
         height: 50dvh;
-        transition: 0.3s;
-        .product-card {
-          position: absolute;
-          left: 0;
-          top: calc(25dvh - 200px);
+        #cards {
+          width: max-content;
           display: flex;
-          flex-direction: column;
-          justify-content: space-around;
           align-items: center;
+          height: 50dvh;
           transition: 0.3s;
-          width: clamp(300px, 90%, 380px);
-          height: 400px;
-          a {
-            height: 90%;
-            overflow-y: hidden;
+          .product-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            transition: 0.3s;
+            width: clamp(300px, 90%, 380px);
+            height: 400px;
+            a {
+              height: 90%;
+              width: 90%;
+              overflow-y: hidden;
 
-            .product-cover {
-              height: 100%;
-              transition: 0.3s;
-              &:hover {
-                scale: 1.1;
+              .product-cover {
+                height: auto;
+                width: 100%;
+                transition: 0.3s;
+                &:hover {
+                  scale: 1.1;
+                }
               }
             }
           }
@@ -76,15 +77,11 @@
 
       #slide-right {
         position: absolute;
-        right: 0;
+        right: 1rem;
         top: calc(25dvh - 1rem);
         background: none;
         border: none;
         cursor: pointer;
-        transition: 0.3s;
-        &:hover {
-          transform: translateX(-0.5rem);
-        }
         img {
           height: 2rem;
           width: 2rem;
@@ -99,7 +96,7 @@
     }
     #feedbacks {
       margin-bottom: 50px;
-      padding: 0 6rem;
+      padding: 0 12rem;
       columns: 5;
       column-gap: 5px;
       .feedback-card {
@@ -107,7 +104,6 @@
         display: flex;
         flex-direction: column;
         break-inside: avoid;
-        //border-radius: value.$radius;
         border: 2px solid value.$darkBrown;
         box-shadow: 0px 0px 3px 1px value.$darkBrown;
         img {
@@ -212,6 +208,106 @@
 }
 @for $i from 1 through 8 {
   #layout #homepage-container #new-items-slider #cards .product-card:nth-of-type(#{$i}) {
-    transform: translateX(calc((clamp(300px, 90%, 380px) * ($i - 1)) + 250px));
+    // transform: translateX(calc((clamp(300px, 90%, 380px) * ($i - 1)) + 250px));
+  }
+}
+
+@media screen and (max-width: 576px) {
+  #layout {
+    #homepage-container {
+      #img-auto-slide {
+        padding: 0 0.5rem;
+        height: 40dvh;
+      }
+      #new-items-slider {
+        #slide-left {
+          left: 0.25rem;
+          top: calc(25dvh - 0.75rem);
+          img {
+            height: 1.5rem;
+            width: 1.5rem;
+          }
+        }
+        #slide-right {
+          right: 0.25rem;
+          top: calc(25dvh - 0.75rem);
+          img {
+            height: 1.5rem;
+            width: 1.5rem;
+          }
+        }
+        #slider {
+          width: calc(clamp(300px, 90%, 380px) * 1);
+          left: calc(50% - clamp(300px, 90%, 380px) * 0.5);
+        }
+      }
+      #feedbacks {
+        padding: 0 1rem;
+        columns: 1;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  #layout {
+    #homepage-container {
+      #img-auto-slide {
+        height: 45dvh;
+        padding: 0 1rem;
+      }
+      #new-items-slider {
+        #slider {
+          width: calc(clamp(300px, 90%, 380px) * 1);
+          left: calc(50% - clamp(300px, 90%, 380px) * 0.5);
+        }
+      }
+      #feedbacks {
+        padding: 0 2rem;
+        columns: 2;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  #layout {
+    #homepage-container {
+      #img-auto-slide {
+        height: 55dvh;
+        padding: 0 1.5rem;
+      }
+      #new-items-slider {
+        #slider {
+          width: calc(clamp(300px, 90%, 380px) * 1);
+          left: calc(50% - clamp(300px, 90%, 380px) * 0.5);
+        }
+      }
+      #feedbacks {
+        padding: 0 3rem;
+        columns: 3;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1440px) {
+  #layout {
+    #homepage-container {
+      #img-auto-slide {
+        height: 65dvh;
+        padding: 0 3rem;
+      }
+      #new-items-slider {
+        #slider {
+          width: calc(clamp(300px, 90%, 380px) * 2);
+          left: calc(50% - clamp(300px, 90%, 380px) * 1);
+        }
+      }
+      #feedbacks {
+        padding: 0 6rem;
+        columns: 4;
+      }
+    }
   }
 }

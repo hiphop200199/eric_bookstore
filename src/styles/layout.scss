@@ -93,6 +93,7 @@
 @media screen and (max-width: 576px) {
   #layout {
     header {
+      padding: 5px 0.5rem;
       img[alt]:not([alt='logo'], [alt='aside-menu-pic']) {
         //屬性不等於...的寫法
         display: none;
@@ -102,6 +103,7 @@
       }
     }
     footer {
+      padding: 0;
       flex-direction: column;
       :not(img) {
         margin: 5px;
@@ -112,7 +114,11 @@
 
 @media screen and (min-width: 576px) and (max-width: 768px) {
   #layout {
+    header {
+      padding: 5px 1rem;
+    }
     footer {
+      padding: 0;
       flex-direction: column;
       :not(img) {
         margin: 5px;
@@ -121,10 +127,24 @@
   }
 }
 
-/* @media screen and (min-width: 768px) and (max-width: 992px) {
-  
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  #layout {
+    header {
+      padding: 5px 1.5rem;
+    }
+    footer {
+      padding: 10px 1.5rem;
+    }
+  }
 }
 
-@media screen and (min-width: 992px) and (max-width: 1400px) {
- 
-} */
+@media screen and (min-width: 992px) and (max-width: 1440px) {
+  #layout {
+    header {
+      padding: 5px 3rem;
+    }
+    footer {
+      padding: 10px 3rem;
+    }
+  }
+}

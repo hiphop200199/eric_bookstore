@@ -17,7 +17,7 @@ let slide
 onMounted(() => {
   window.addEventListener('scroll', () => (scrollY.value = window.scrollY))
   slide = (dir) => {
-    dir === 'left' ? (slideDistance.value -= 250) : (slideDistance.value += 250)
+    dir === 'left' ? (slideDistance.value -= 380) : (slideDistance.value += 380)
     cards.value.style.transform = `translateX(${slideDistance.value}px)`
   }
 })
@@ -28,24 +28,21 @@ onMounted(() => {
     <img id="img-auto-slide" src="../assets/man-1690965_640.jpg" alt="" />
     <h1>熱門商品</h1>
     <div id="new-items-slider">
-      <button
-        id="slide-left"
-        @click="slide('left')"
-        v-if="scrollY === 800 && slideDistance > -2000"
-      >
+      <button id="slide-left" @click="slide('left')" v-if="slideDistance > -3040">
         <img src="../assets/left-arrow.png" alt="" />
       </button>
-      <div id="cards" ref="cards">
-        <div class="product-card" v-for="(card, index) in cardData" :key="index">
-          <router-link to="detail">
-            <img class="product-cover" src="../assets/castle.png" alt="" />
-          </router-link>
-          <p class="product-title">{{ card.title }}</p>
-          <p class="product-price">{{ card.price }}</p>
+      <div id="slider">
+        <div id="cards" ref="cards">
+          <div class="product-card" v-for="(card, index) in cardData" :key="index">
+            <router-link to="detail">
+              <img class="product-cover" src="../assets/castle.png" alt="" />
+            </router-link>
+            <p class="product-title">{{ card.title }}</p>
+            <p class="product-price">{{ card.price }}</p>
+          </div>
         </div>
       </div>
-
-      <button id="slide-right" @click="slide('right')" v-if="scrollY === 800 && slideDistance < 0">
+      <button id="slide-right" @click="slide('right')" v-if="slideDistance < 0">
         <img src="../assets/right-arrow.png" alt="" />
       </button>
     </div>
