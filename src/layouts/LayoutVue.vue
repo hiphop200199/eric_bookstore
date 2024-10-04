@@ -15,7 +15,9 @@ const toggleAsideMenu = () => {
 <template>
   <div id="layout">
     <header>
-      <a href="/"><img src="../assets/book.png" alt="logo" /></a>
+      <a href="https://hiphop200199.github.io/eric_bookstore/"
+        ><img src="../assets/book.png" alt="logo"
+      /></a>
       <nav>
         <section v-if="isLogin">
           <router-link to="/"><img src="../assets/log-out.png" alt="" id="logout" /></router-link>
@@ -25,7 +27,7 @@ const toggleAsideMenu = () => {
             ><img src="../assets/shopping-cart.png" alt="" id="cart"
           /></router-link>
         </section>
-        <router-link to="/" v-else
+        <router-link to="/login" title="登入" v-else
           ><img src="../assets/log-in.png" alt="" id="login"
         /></router-link>
         <button id="aside-menu-btn" @click="toggleAsideMenu">
@@ -40,7 +42,9 @@ const toggleAsideMenu = () => {
     </header>
     <router-view />
     <footer>
-      <a href="/"><img src="../assets/book.png" alt="logo" /></a>
+      <a href="https://hiphop200199.github.io/eric_bookstore/"
+        ><img src="../assets/book.png" alt="logo"
+      /></a>
       <p id="copyright">Copyright © Reading 2024 | All Rights Reserved.</p>
       <a href="https://www.instagram.com/" target="_blank"
         ><img src="../assets/instagram.png" alt="" id="instagram"
@@ -53,7 +57,7 @@ const toggleAsideMenu = () => {
         <router-link to="/">訂單查詢</router-link>
         <router-link to="/">購物車</router-link>
       </section>
-      <router-link v-else to="/">登入</router-link>
+      <router-link v-else to="/login">登入</router-link>
     </aside>
     <a href="#" id="to-top"><img src="../assets/up-arrow.png" alt="" /></a>
   </div>

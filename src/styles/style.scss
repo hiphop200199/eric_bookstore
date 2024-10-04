@@ -1,8 +1,11 @@
 @use './layout.scss';
+@use './homepage.scss';
+@use './login.scss';
+@use './register.scss';
+@use './forgot-password.scss';
 @use './list.scss';
 @use './detail.scss';
 @use './value.scss';
-@use './homepage.scss';
 
 * {
   padding: 0;

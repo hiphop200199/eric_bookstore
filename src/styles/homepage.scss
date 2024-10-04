@@ -3,7 +3,7 @@
 #layout {
   #homepage-container {
     position: relative;
-    min-height: 90dvh;
+    min-height: 93dvh;
     background-color: value.$lightColor;
     #img-auto-slide {
       display: block;
@@ -48,15 +48,22 @@
           display: flex;
           align-items: center;
           height: 50dvh;
+
           transition: 0.3s;
           .product-card {
             display: flex;
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
+            border: 2px solid transparent;
+            box-shadow: 0px 0px 3px 1px transparent;
             transition: 0.3s;
             width: value.$cardWidth;
             height: 400px;
+            &:hover {
+              border-color: value.$darkBrown;
+              box-shadow: 0px 0px 3px 1px value.$darkBrown;
+            }
             a {
               height: 90%;
               width: 100%;

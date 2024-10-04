@@ -1,6 +1,10 @@
+import CartView from '@/views/CartView.vue'
 import DetailView from '@/views/DetailView.vue'
+import ForgotPasswordView from '@/views/forgotPasswordView.vue'
 import HomepageView from '@/views/HomepageView.vue'
 import ListView from '@/views/ListView.vue'
+import LoginView from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -17,12 +21,29 @@ const router = createRouter({
       component: ListView
     },
     {
-      path: '/detail',
+      path: '/detail/:id',
       name: 'detail',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: DetailView
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: ForgotPasswordView
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CartView
     }
   ],
   scrollBehavior(to, from, savedPosition) {

@@ -1,8 +1,8 @@
 @use './value.scss';
 
 #layout {
-  main {
-    min-height: 90dvh;
+  #product-container {
+    min-height: 93dvh;
     padding: 0 6rem;
     background-color: value.$lightColor;
     #class-filters {
@@ -28,15 +28,15 @@
       outline: none;
       padding: 5px;
       border: 3px solid value.$darkBrown;
+      background-color: transparent;
       &:focus {
         border-color: value.$lightBrown;
       }
     }
-    #product-container {
+    #product-box {
       display: grid;
       justify-items: center;
       grid-template-columns: repeat(4, 1fr);
-      padding: 10px;
       .product-card {
         display: flex;
         flex-direction: column;
@@ -59,9 +59,9 @@
 
 @media screen and (max-width: 576px) {
   #layout {
-    main {
+    #product-container {
       padding: 0 0.5rem;
-      #product-container {
+      #product-box {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -72,9 +72,9 @@
 
 @media screen and (min-width: 576px) and (max-width: 768px) {
   #layout {
-    main {
+    #product-container {
       padding: 0 1rem;
-      #product-container {
+      #product-box {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -83,9 +83,9 @@
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
   #layout {
-    main {
+    #product-container {
       padding: 0 1.5rem;
-      #product-container {
+      #product-box {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -94,9 +94,9 @@
 
 @media screen and (min-width: 992px) and (max-width: 1440px) {
   #layout {
-    main {
+    #product-container {
       padding: 0 3rem;
-      #product-container {
+      #product-box {
         grid-template-columns: repeat(3, 1fr);
       }
     }
