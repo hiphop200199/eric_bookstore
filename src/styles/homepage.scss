@@ -39,9 +39,9 @@
         }
       }
       #slider {
-        width: calc(clamp(300px, 90%, 380px) * 3);
+        width: calc(value.$cardWidth * 3);
         position: relative;
-        left: calc(50% - clamp(300px, 90%, 380px) * 1.5);
+        left: calc(50% - value.$cardWidth * 1.5);
         height: 50dvh;
         #cards {
           width: max-content;
@@ -55,11 +55,11 @@
             justify-content: space-around;
             align-items: center;
             transition: 0.3s;
-            width: clamp(300px, 90%, 380px);
+            width: value.$cardWidth;
             height: 400px;
             a {
               height: 90%;
-              width: 90%;
+              width: 100%;
               overflow-y: hidden;
 
               .product-cover {
@@ -237,8 +237,8 @@
           }
         }
         #slider {
-          width: calc(clamp(300px, 90%, 380px) * 1);
-          left: calc(50% - clamp(300px, 90%, 380px) * 0.5);
+          width: calc(value.$cardWidth * 1);
+          left: calc(50% - value.$cardWidth * 0.5);
         }
       }
       #feedbacks {
@@ -258,8 +258,8 @@
       }
       #new-items-slider {
         #slider {
-          width: calc(clamp(300px, 90%, 380px) * 1);
-          left: calc(50% - clamp(300px, 90%, 380px) * 0.5);
+          width: calc(value.$cardWidth * 1);
+          left: calc(50% - value.$cardWidth * 0.5);
         }
       }
       #feedbacks {
@@ -279,8 +279,8 @@
       }
       #new-items-slider {
         #slider {
-          width: calc(clamp(300px, 90%, 380px) * 1);
-          left: calc(50% - clamp(300px, 90%, 380px) * 0.5);
+          width: calc(value.$cardWidth * 1);
+          left: calc(50% - value.$cardWidth * 0.5);
         }
       }
       #feedbacks {
@@ -300,8 +300,8 @@
       }
       #new-items-slider {
         #slider {
-          width: calc(clamp(300px, 90%, 380px) * 2);
-          left: calc(50% - clamp(300px, 90%, 380px) * 1);
+          width: calc(value.$cardWidth * 2);
+          left: calc(50% - value.$cardWidth * 1);
         }
       }
       #feedbacks {

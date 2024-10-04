@@ -10,6 +10,7 @@ const cardData = [
   { title: 'loremj', price: '$300' },
   { title: 'yayayaj', price: '$400' }
 ]
+const cardWidth = 300
 let slideDistance = ref(0)
 let scrollY = ref(0)
 const cards = ref([])
@@ -17,7 +18,7 @@ let slide
 onMounted(() => {
   window.addEventListener('scroll', () => (scrollY.value = window.scrollY))
   slide = (dir) => {
-    dir === 'left' ? (slideDistance.value -= 380) : (slideDistance.value += 380)
+    dir === 'left' ? (slideDistance.value -= cardWidth) : (slideDistance.value += cardWidth)
     cards.value.style.transform = `translateX(${slideDistance.value}px)`
   }
 })
