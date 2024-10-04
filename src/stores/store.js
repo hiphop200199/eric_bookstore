@@ -11,11 +11,14 @@ export const useLayoutStore = defineStore('layout', () => {
 
 export const useProductStore = defineStore('product', () => {
   const products = ref([])
+  const productsPagination = ref({})
   const monthlyNewProducts = ref([])
   const product = ref({})
   const getProducts = () => {
     axios.get(url + 'getProducts').then((res) => {
       products.value = res.data.data
+      productsPagination.value = res.data
+      console.log(res.data)
     })
   }
   const getMonthlyNewProducts = () => {
@@ -28,5 +31,13 @@ export const useProductStore = defineStore('product', () => {
       product.value = res.data
     })
   }
-  return { product, products, monthlyNewProducts, getProducts, getProduct, getMonthlyNewProducts }
+  return {
+    product,
+    products,
+    monthlyNewProducts,
+    productsPagination,
+    getProducts,
+    getProduct,
+    getMonthlyNewProducts
+  }
 })
