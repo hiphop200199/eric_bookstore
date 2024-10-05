@@ -65,6 +65,14 @@
         background: none;
         border: none;
         cursor: pointer;
+        &.active {
+          background-color: value.$darkBrown;
+          color: white;
+        }
+        &:disabled {
+          cursor: not-allowed;
+          color: grey;
+        }
         img {
           width: 100%;
           height: auto;

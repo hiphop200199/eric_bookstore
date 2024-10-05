@@ -13,6 +13,11 @@
     img {
       height: 5dvh;
     }
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
     #aside-menu-btn {
       position: relative; //讓z-index起作用
       display: none;
@@ -69,6 +74,11 @@
       white-space: nowrap;
       text-decoration: none;
       color: value.$darkBrown;
+    }
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
     }
   }
   #to-top {

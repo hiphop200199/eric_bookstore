@@ -1,19 +1,32 @@
 <script setup>
-import { ref } from 'vue'
+import { useAuthStore } from '@/stores/store'
+import { computed, onMounted, ref } from 'vue'
+const authStore = useAuthStore()
 const account = ref('')
 const password = ref('')
 const password_confirmation = ref('')
 const name = ref('')
-const phone = ref('')
-const address = ref('')
-const handleRegister = () => {}
+const message = ref(null)
+const isLogin = computed(() => authStore.isLogin)
+const handleRegister = ($event) => {
+  $event.preventDefault()
+  if (password_confirmation.value !== password.value) {
+    message.value.innerText = '密碼不一致'
+    message.value.classList.add('is-error')
+    return false
+  } else {
+    message.value.classList.remove('is-error')
+    message.value.innerText = ''
+    authStore.handleRegister(name.value, account.value, password.value, password_confirmation.value)
+  }
+}
 </script>
 
 <template>
   <div id="register-container">
     <form @submit="handleRegister">
-      <input type="text" placeholder="請輸入姓名..." v-model="name" required />
-      <input type="email" placeholder="請輸入email..." v-model="account" required />
+      <input type="text" placeholder="請輸入姓名..." v-model="name" required maxlength="255" />
+      <input type="email" placeholder="請輸入email..." v-model="account" required maxlength="255" />
       <input
         type="password"
         placeholder="請輸入密碼..."
@@ -28,10 +41,9 @@ const handleRegister = () => {}
         required
         minlength="8"
       />
-      <input type="tel" placeholder="電話(選填)" v-model="phone" />
-      <input type="text" placeholder="地址(選填)" v-model="address" />
+      <p id="message" ref="message"></p>
       <div id="buttons">
-        <button type="submit">提交</button>
+        <button type="submit">註冊</button>
       </div>
     </form>
   </div>

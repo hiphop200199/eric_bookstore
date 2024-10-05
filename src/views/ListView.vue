@@ -5,8 +5,8 @@ const productStore = useProductStore()
 const products = computed(() => productStore.products)
 const productsPagination = computed(() => productStore.productsPagination)
 const monthlyNewProducts = computed(() => productStore.monthlyNewProducts)
-const getProducts = () => {
-  productStore.getProducts()
+const getProducts = (url = null) => {
+  productStore.getProducts(url)
 }
 const getMonthlyNewProducts = () => {
   productStore.getMonthlyNewProducts()
@@ -56,11 +56,38 @@ getProducts()
       </div>
     </div>
     <section class="pagination">
-      <button><<</button>
-      <button v-for="(l, index) in productsPagination.links" :key="index">
-        {{ htmlDecode(l.label) }}
+      <button
+        @click="getProducts(productsPagination.first_page_url)"
+        :disabled="productsPagination.current_page == 1"
+      >
+        <<
       </button>
-      <button>>></button>
+      <button
+        @click="getProducts(productsPagination.prev_page_url)"
+        :disabled="productsPagination.current_page == 1"
+      >
+        <
+      </button>
+      <button
+        @click="getProducts(productsPagination.links[index].url)"
+        :class="productsPagination.links[index].active ? 'active' : ''"
+        v-for="index in productsPagination.last_page"
+        :key="index"
+      >
+        {{ htmlDecode(productsPagination.links[index].label) }}
+      </button>
+      <button
+        @click="getProducts(productsPagination.next_page_url)"
+        :disabled="productsPagination.current_page == productsPagination.last_page"
+      >
+        >
+      </button>
+      <button
+        @click="getProducts(productsPagination.last_page_url)"
+        :disabled="productsPagination.current_page == productsPagination.last_page"
+      >
+        >>
+      </button>
     </section>
   </div>
 </template>

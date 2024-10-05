@@ -1,12 +1,12 @@
 <script setup>
-import { useLayoutStore, useProductStore } from '@/stores/store'
+import { useAuthStore, useProductStore } from '@/stores/store'
 import router from '@/router'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-const layoutStore = useLayoutStore()
+const authStore = useAuthStore()
 const productStore = useProductStore()
 const route = useRoute()
-const isLogin = layoutStore.isLogin
+const isLogin = authStore.isLogin
 const product = computed(() => productStore.product)
 let bookId = route.params.id
 

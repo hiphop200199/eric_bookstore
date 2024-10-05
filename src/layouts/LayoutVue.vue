@@ -1,14 +1,17 @@
 <script setup>
-import { useLayoutStore } from '@/stores/store'
-import { ref } from 'vue'
+import { useAuthStore } from '@/stores/store'
+import { computed, ref } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
-const store = useLayoutStore()
+const authStore = useAuthStore()
 const asideMenuPic = ref(null)
 const asideMenu = ref(null)
-let isLogin = store.isLogin
+const isLogin = computed(() => authStore.isLogin)
 const toggleAsideMenu = () => {
   asideMenuPic.value.classList.toggle('rotated')
   asideMenu.value.classList.toggle('active')
+}
+const handleLogout = () => {
+  authStore.handleLogout()
 }
 </script>
 
@@ -20,10 +23,12 @@ const toggleAsideMenu = () => {
       /></a>
       <nav>
         <section v-if="isLogin">
-          <router-link to="/"><img src="../assets/log-out.png" alt="" id="logout" /></router-link>
+          <button @click="handleLogout">
+            <img src="../assets/log-out.png" alt="" id="logout" />
+          </button>
           <router-link to="/"><img src="../assets/user.png" alt="" id="user" /></router-link>
           <router-link to="/"><img src="../assets/view-list.png" alt="" id="order" /></router-link>
-          <router-link to="/"
+          <router-link to="/cart"
             ><img src="../assets/shopping-cart.png" alt="" id="cart"
           /></router-link>
         </section>
@@ -52,12 +57,12 @@ const toggleAsideMenu = () => {
     </footer>
     <aside ref="asideMenu">
       <section v-if="isLogin">
-        <router-link to="/">登出</router-link>
-        <router-link to="/">會員資料</router-link>
-        <router-link to="/">訂單查詢</router-link>
-        <router-link to="/">購物車</router-link>
+        <button @click="handleLogout">登出</button>
+        <button><router-link to="/">會員資料</router-link></button>
+        <button><router-link to="/">訂單查詢</router-link></button>
+        <button><router-link to="/cart">購物車</router-link></button>
       </section>
-      <router-link v-else to="/login">登入</router-link>
+      <button v-else @click="toggleAsideMenu"><router-link to="/login">登入</router-link></button>
     </aside>
     <a href="#" id="to-top"><img src="../assets/up-arrow.png" alt="" /></a>
   </div>

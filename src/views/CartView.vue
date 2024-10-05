@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-import { useLayoutStore } from '@/stores/store'
-const layoutStore = useLayoutStore()
-const isLogin = layoutStore.isLogin
+import { useAuthStore } from '@/stores/store'
+const authStore = useAuthStore()
+const isLogin = authStore.isLogin
 </script>
 
 <template>

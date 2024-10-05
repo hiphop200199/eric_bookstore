@@ -25,6 +25,14 @@
           border-color: value.$lightBrown;
         }
       }
+      #message {
+        display: none;
+        &.is-error {
+          display: block;
+          color: red;
+          margin-block: 20px;
+        }
+      }
       #buttons {
         margin-bottom: 1rem;
         button {
