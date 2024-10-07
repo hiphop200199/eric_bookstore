@@ -5,7 +5,13 @@ import { RouterView, RouterLink } from 'vue-router'
 const authStore = useAuthStore()
 const asideMenuPic = ref(null)
 const asideMenu = ref(null)
-const isLogin = computed(() => authStore.isLogin)
+/* const isLogin = computed(() => {
+  if (authStore.isLogin !== null) {
+    return true
+  } else {
+    return false
+  }
+}) */
 const toggleAsideMenu = () => {
   asideMenuPic.value.classList.toggle('rotated')
   asideMenu.value.classList.toggle('active')
@@ -13,6 +19,7 @@ const toggleAsideMenu = () => {
 const handleLogout = () => {
   authStore.handleLogout()
 }
+console.log(authStore.isLogin)
 </script>
 
 <template>
@@ -22,13 +29,17 @@ const handleLogout = () => {
         ><img src="../assets/book.png" alt="logo"
       /></a>
       <nav>
-        <section v-if="isLogin">
+        <section v-if="authStore.isLogin !== null">
           <button @click="handleLogout">
-            <img src="../assets/log-out.png" alt="" id="logout" />
+            <img src="../assets/log-out.png" alt="" id="logout" title="登出" />
           </button>
-          <router-link to="/"><img src="../assets/user.png" alt="" id="user" /></router-link>
-          <router-link to="/"><img src="../assets/view-list.png" alt="" id="order" /></router-link>
-          <router-link to="/cart"
+          <router-link to="/member" title="會員資料"
+            ><img src="../assets/user.png" alt="" id="user"
+          /></router-link>
+          <router-link to="/order" title="訂單資料"
+            ><img src="../assets/view-list.png" alt="" id="order"
+          /></router-link>
+          <router-link to="/cart" title="購物車"
             ><img src="../assets/shopping-cart.png" alt="" id="cart"
           /></router-link>
         </section>
@@ -56,10 +67,10 @@ const handleLogout = () => {
       /></a>
     </footer>
     <aside ref="asideMenu">
-      <section v-if="isLogin">
+      <section v-if="authStore.isLogin !== null">
         <button @click="handleLogout">登出</button>
-        <button><router-link to="/">會員資料</router-link></button>
-        <button><router-link to="/">訂單查詢</router-link></button>
+        <button><router-link to="/member">會員資料</router-link></button>
+        <button><router-link to="/order">訂單查詢</router-link></button>
         <button><router-link to="/cart">購物車</router-link></button>
       </section>
       <button v-else @click="toggleAsideMenu"><router-link to="/login">登入</router-link></button>

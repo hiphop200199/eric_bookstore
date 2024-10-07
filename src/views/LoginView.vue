@@ -1,9 +1,9 @@
 <script setup>
 import { useAuthStore } from '@/stores/store'
-import { ref } from 'vue'
+import { computed } from 'vue'
 const authStore = useAuthStore()
-const account = ref('')
-const password = ref('')
+let account = ''
+let password = ''
 const handleLogin = ($event, email, password) => {
   $event.preventDefault()
   authStore.handleLogIn(email, password)
@@ -15,7 +15,7 @@ const handleLogin = ($event, email, password) => {
     <form @submit="handleLogin($event, account, password)">
       <input type="email" placeholder="請輸入email..." v-model="account" required />
       <input type="password" placeholder="請輸入密碼..." v-model="password" required />
-      <p id="message" ref="message"></p>
+      <p id="message" ref="message">{{ authStore.message }}</p>
       <div id="buttons">
         <button type="submit">登入</button>
         <router-link to="/register"><button>註冊</button></router-link>

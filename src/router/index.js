@@ -4,6 +4,9 @@ import ForgotPasswordView from '@/views/forgotPasswordView.vue'
 import HomepageView from '@/views/HomepageView.vue'
 import ListView from '@/views/ListView.vue'
 import LoginView from '@/views/LoginView.vue'
+import MemberView from '@/views/MemberView.vue'
+import OrderDetailView from '@/views/OrderDetailView.vue'
+import OrderView from '@/views/OrderView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -44,6 +47,21 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: CartView
+    },
+    {
+      path: '/member',
+      name: 'member',
+      component: MemberView
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: OrderView
+    },
+    {
+      path: '/order-detail',
+      name: 'order-detail',
+      component: OrderDetailView
     }
   ],
   scrollBehavior(to, from, savedPosition) {
