@@ -7,12 +7,12 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 jobs:
-  build:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -37,6 +37,5 @@ jobs:
     - name: Test
       run: npm run test:unit
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        folder: build # The folder the action should deploy.
+      id: deployment
+      uses: actions/deploy-pages@v4
