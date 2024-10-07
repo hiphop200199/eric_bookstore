@@ -15,11 +15,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js 20.x
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.x
-        cache: 'npm'
     - name: Install dependencies    
       run: npm install
     - name: Build
@@ -28,5 +23,9 @@ jobs:
       run: npm run test:unit
     - name: Deploy to GitHub Pages
       id: deployment
-      run: npm run deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v4
+      with:
+          token: ${{ secrets.ACCESS_TOKEN }} # Settings > Secret 建立的 ACCESS_TOKEN，推同個 repo 的話可以不需要
+          BRANCH: gh-pages # deploy 到 gh-pages 這個分支
+          FOLDER: dist # build 後的資料夾
       
