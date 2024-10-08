@@ -1,4 +1,5 @@
 <script setup>
+import LoadingAnimation from '@/components/LoadingAnimation.vue'
 import { useAuthStore, useProductStore } from '@/stores/store'
 import router from '@/router'
 import { computed } from 'vue'
@@ -24,8 +25,9 @@ getProduct(bookId)
 
 <template>
   <div id="detail-container">
-    <img :src="product.image_source" alt="" />
-    <section id="info">
+    <loading-animation v-if="productStore.isLoading"></loading-animation>
+    <img :src="product.image_source" alt="" v-if="!productStore.isLoading" />
+    <section id="info" v-if="!productStore.isLoading">
       <h1 id="title">{{ product.name }}</h1>
       <p>作者:{{ product.author }}</p>
       <p>出版社:{{ product.publisher }}</p>

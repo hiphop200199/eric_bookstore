@@ -23,16 +23,5 @@ getProduct(bookId)
 </script>
 
 <template>
-  <div id="order-detail-container">
-    <img :src="product.image_source" alt="" />
-    <section id="info">
-      <h1 id="title">{{ product.name }}</h1>
-      <p>作者:{{ product.author }}</p>
-      <p>出版社:{{ product.publisher }}</p>
-      <p>出版日期:{{ product.published_date }}</p>
-      <p>語言:{{ product.language }}</p>
-      <p>主題:{{ product.theme }}</p>
-      <p>價格:${{ product.price }}</p>
-    </section>
-  </div>
+  <div id="order-detail-container"></div>
 </template>

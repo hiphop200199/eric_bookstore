@@ -8,6 +8,7 @@ axios.defaults.withXSRFToken = true
 const baseUrl = 'http://localhost:8000/'
 
 export const useAuthStore = defineStore('auth', () => {
+  const memberId = ref(sessionStorage.getItem('id'))
   const isLogin = ref(sessionStorage.getItem('token'))
   const message = ref('')
   const handleRegister = (name, email, password, passwordConfirm) => {
@@ -20,10 +21,12 @@ export const useAuthStore = defineStore('auth', () => {
           password: password,
           password_confirmation: passwordConfirm
         })
-        .then(() => {
+        .then((res) => {
           message.value = ''
           sessionStorage.setItem('token', document.cookie)
+          sessionStorage.setItem('id', res.data[0].id)
           isLogin.value = sessionStorage.getItem('token')
+          memberId.value = sessionStorage.getItem('id')
           router.push({ path: '/' })
         })
         .catch((err) => console.log(err))
@@ -40,7 +43,11 @@ export const useAuthStore = defineStore('auth', () => {
         .then((res) => {
           message.value = ''
           sessionStorage.setItem('token', document.cookie)
+          sessionStorage.setItem('id', res.data[0].id)
+          memberId.value = sessionStorage.getItem('id')
           isLogin.value = sessionStorage.getItem('token')
+          console.log(res)
+
           router.push({ path: '/' })
         })
         .catch((err) => {
@@ -57,16 +64,19 @@ export const useAuthStore = defineStore('auth', () => {
         .post(baseUrl + 'logout')
         .then(() => {
           sessionStorage.removeItem('token')
+          sessionStorage.removeItem('id')
+          memberId.value = sessionStorage.getItem('id')
           isLogin.value = sessionStorage.getItem('token')
           router.push({ path: '/' })
         })
         .catch((err) => console.log(err))
     })
   }
-  return { isLogin, message, handleRegister, handleLogout, handleLogIn }
+  return { memberId, isLogin, message, handleRegister, handleLogout, handleLogIn }
 })
 
 export const useProductStore = defineStore('product', () => {
+  const isLoading = ref(true)
   const products = ref([])
   const productsPagination = ref({})
   const monthlyNewProducts = ref([])
@@ -78,6 +88,7 @@ export const useProductStore = defineStore('product', () => {
     axios.get(finalUrl).then((res) => {
       products.value = res.data.data
       productsPagination.value = res.data
+      isLoading.value = false
     })
   }
   const getMonthlyNewProducts = () => {
@@ -88,9 +99,11 @@ export const useProductStore = defineStore('product', () => {
   const getProduct = (index) => {
     axios.get(baseUrl + 'getProduct', { params: { id: index } }).then((res) => {
       product.value = res.data
+      isLoading.value = false
     })
   }
   return {
+    isLoading,
     product,
     products,
     monthlyNewProducts,
@@ -99,4 +112,39 @@ export const useProductStore = defineStore('product', () => {
     getProduct,
     getMonthlyNewProducts
   }
+})
+
+export const useCartStore = defineStore('cart', () => {
+  const isLoading = ref(true)
+  const items = ref([])
+  const getItems = () => {
+    axios
+      .get(baseUrl + 'getItems', { params: { id: sessionStorage.getItem('id') } })
+      .then((res) => {
+        items.value = res.data.data
+        isLoading.value = false
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
+  }
+  const addItem = () => {
+    // axios.get(baseUrl + 'sanctum/csrf-cookie').then
+  }
+  const removeItem = (id) => {
+    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
+      axios
+        .delete(baseUrl + 'removeItem', {
+          id: id
+        })
+        .then((res) => {
+          //console.log(res)
+          window.location.reload()
+        })
+        .catch((err) => console.log(err))
+    })
+  }
+  const adjustAmount = () => {
+    // axios.get(baseUrl + 'sanctum/csrf-cookie').then
+  }
+  return { isLoading, items, getItems, addItem, removeItem, adjustAmount }
 })

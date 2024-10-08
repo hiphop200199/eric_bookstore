@@ -1,8 +1,14 @@
 <script setup>
-import { ref } from 'vue'
-import { useAuthStore } from '@/stores/store'
-const authStore = useAuthStore()
-const isLogin = authStore.isLogin
+import { useCartStore } from '@/stores/store'
+
+const cartStore = useCartStore()
+const adjustAmount = () => {
+  cartStore.adjustAmount()
+}
+const removeItem = () => {
+  cartStore.removeItem()
+}
+cartStore.getItems()
 </script>
 
 <template>
@@ -13,15 +19,10 @@ const isLogin = authStore.isLogin
         <img class="product-cover" src="../assets/man-1690965_640.jpg" alt="" />
         <p class="product-title">123</p>
         <p class="product-price">$111</p>
-        <label for="amount">數量:<input type="number" name="" id="amount" min="1" /></label>
-        <button class="remove">移除</button>
-      </div>
-      <div class="product-card">
-        <img class="product-cover" src="../assets/man-1690965_640.jpg" alt="" />
-        <p class="product-title">123</p>
-        <p class="product-price">$111</p>
-        <label for="amount">數量:<input type="number" name="" id="amount" min="1" /></label>
-        <button class="remove">移除</button>
+        <label for="amount"
+          >數量:<input type="number" id="amount" min="1" @change="adjustAmount"
+        /></label>
+        <button class="remove" @click="removeItem">移除</button>
       </div>
     </div>
     <h1 id="total">總金額:1000元</h1>

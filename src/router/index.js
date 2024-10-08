@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/store'
 import CartView from '@/views/CartView.vue'
 import DetailView from '@/views/DetailView.vue'
 import ForgotPasswordView from '@/views/forgotPasswordView.vue'
@@ -67,6 +68,23 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     // always scroll to top
     return { top: 0 }
+  }
+})
+
+//預防沒權限的情況下瀏覽某些路由
+router.beforeEach(async (to, from) => {
+  const authstore = useAuthStore()
+  if (
+    // make sure the user is authenticated
+    authstore.isLogin === null &&
+    // ❗️ Avoid an infinite redirect
+    (to.name === 'member' ||
+      to.name === 'order' ||
+      to.name === 'order-detail' ||
+      to.name === 'cart')
+  ) {
+    // redirect the user to the login page
+    return { name: 'login' }
   }
 })
 
