@@ -5,13 +5,6 @@ import { RouterView, RouterLink } from 'vue-router'
 const authStore = useAuthStore()
 const asideMenuPic = ref(null)
 const asideMenu = ref(null)
-/* const isLogin = computed(() => {
-  if (authStore.isLogin !== null) {
-    return true
-  } else {
-    return false
-  }
-}) */
 const toggleAsideMenu = () => {
   asideMenuPic.value.classList.toggle('rotated')
   asideMenu.value.classList.toggle('active')
@@ -39,9 +32,10 @@ console.log(authStore.isLogin)
           <router-link to="/order" title="訂單資料"
             ><img src="../assets/view-list.png" alt="" id="order"
           /></router-link>
-          <router-link to="/cart" title="購物車"
-            ><img src="../assets/shopping-cart.png" alt="" id="cart"
-          /></router-link>
+          <router-link to="/cart" title="購物車">
+            <img src="../assets/shopping-cart.png" alt="" id="cart" />
+            <!-- <span id="cart-amount" :class="">(1)</span> -->
+          </router-link>
         </section>
         <router-link to="/login" title="登入" v-else
           ><img src="../assets/log-in.png" alt="" id="login"

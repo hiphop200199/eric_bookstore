@@ -82,6 +82,7 @@ export const useProductStore = defineStore('product', () => {
   const monthlyNewProducts = ref([])
   const product = ref({})
   const getProducts = (url = null) => {
+    isLoading.value = true
     let finalUrl
     if (url) finalUrl = url
     else finalUrl = baseUrl + 'getProducts'
@@ -92,11 +93,13 @@ export const useProductStore = defineStore('product', () => {
     })
   }
   const getMonthlyNewProducts = () => {
+    isLoading.value = true
     axios.get(baseUrl + 'getMonthlyNewProducts').then((res) => {
       monthlyNewProducts.value = res.data.data
     })
   }
   const getProduct = (index) => {
+    isLoading.value = true
     axios.get(baseUrl + 'getProduct', { params: { id: index } }).then((res) => {
       product.value = res.data
       isLoading.value = false
@@ -117,18 +120,34 @@ export const useProductStore = defineStore('product', () => {
 export const useCartStore = defineStore('cart', () => {
   const isLoading = ref(true)
   const items = ref([])
+  const total = ref(0)
+  //const amount = ref(0)
   const getItems = () => {
     axios
       .get(baseUrl + 'getItems', { params: { id: sessionStorage.getItem('id') } })
       .then((res) => {
-        items.value = res.data.data
+        items.value = res.data
+        total.value = res.data.reduce(function (a, c) {
+          return a + c.price * c.amount
+        }, 0)
         isLoading.value = false
-        console.log(res)
+        console.log(res, total.value)
       })
       .catch((err) => console.log(err))
   }
-  const addItem = () => {
-    // axios.get(baseUrl + 'sanctum/csrf-cookie').then
+  const addItem = (id) => {
+    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
+      axios
+        .post(baseUrl + 'addItem', {
+          id: id,
+          memberId: sessionStorage.getItem('id')
+        })
+        .then((res) => {
+          console.log(res)
+          router.push({ path: '/list' })
+        })
+        .catch((err) => console.log(err))
+    })
   }
   const removeItem = (id) => {
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
@@ -146,5 +165,5 @@ export const useCartStore = defineStore('cart', () => {
   const adjustAmount = () => {
     // axios.get(baseUrl + 'sanctum/csrf-cookie').then
   }
-  return { isLoading, items, getItems, addItem, removeItem, adjustAmount }
+  return { isLoading, items, total, getItems, addItem, removeItem, adjustAmount }
 })

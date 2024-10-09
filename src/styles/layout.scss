@@ -9,7 +9,18 @@
     height: 7dvh;
     padding: 5px 6rem;
     background-color: value.$lightColor;
-
+    a[title='購物車'] {
+      text-decoration: none;
+      #cart-amount {
+        font-weight: 500;
+        color: black;
+        font-size: 16px;
+        opacity: 0;
+        &.active {
+          opacity: 1;
+        }
+      }
+    }
     img {
       height: 5dvh;
     }
