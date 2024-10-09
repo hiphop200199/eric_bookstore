@@ -10,7 +10,9 @@ const baseUrl = 'http://localhost:8000/'
 export const useAuthStore = defineStore('auth', () => {
   const memberId = ref(sessionStorage.getItem('id'))
   const isLogin = ref(sessionStorage.getItem('token'))
+  const isLoading = ref(true)
   const message = ref('')
+  const user = ref({})
   const handleRegister = (name, email, password, passwordConfirm) => {
     message.value = '請稍候...'
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
@@ -72,7 +74,28 @@ export const useAuthStore = defineStore('auth', () => {
         .catch((err) => console.log(err))
     })
   }
-  return { memberId, isLogin, message, handleRegister, handleLogout, handleLogIn }
+  const getUser = () => {
+    isLoading.value = true
+    axios
+      .get(baseUrl + 'getUser', { params: { id: memberId.value } })
+      .then((res) => {
+        user.value = res.data[0]
+        isLoading.value = false
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
+  }
+  return {
+    user,
+    isLoading,
+    memberId,
+    isLogin,
+    message,
+    handleRegister,
+    handleLogout,
+    handleLogIn,
+    getUser
+  }
 })
 
 export const useProductStore = defineStore('product', () => {
@@ -121,7 +144,6 @@ export const useCartStore = defineStore('cart', () => {
   const isLoading = ref(true)
   const items = ref([])
   const total = ref(0)
-  //const amount = ref(0)
   const getItems = () => {
     axios
       .get(baseUrl + 'getItems', { params: { id: sessionStorage.getItem('id') } })
@@ -153,17 +175,29 @@ export const useCartStore = defineStore('cart', () => {
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .delete(baseUrl + 'removeItem', {
-          id: id
+          params: {
+            id: id
+          }
         })
         .then((res) => {
-          //console.log(res)
+          console.log(res)
           window.location.reload()
         })
         .catch((err) => console.log(err))
     })
   }
-  const adjustAmount = () => {
-    // axios.get(baseUrl + 'sanctum/csrf-cookie').then
+  const adjustAmount = (id, amount) => {
+    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
+      axios
+        .put(baseUrl + 'editItem', {
+          id: id,
+          amount: amount
+        })
+        .then((res) => {
+          window.location.reload()
+        })
+        .catch((err) => console.log(err))
+    })
   }
   return { isLoading, items, total, getItems, addItem, removeItem, adjustAmount }
 })

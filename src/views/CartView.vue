@@ -1,12 +1,15 @@
 <script setup>
+import LoadingAnimation from '@/components/LoadingAnimation.vue'
 import { useCartStore } from '@/stores/store'
+import { ref } from 'vue'
 
 const cartStore = useCartStore()
-const adjustAmount = () => {
-  cartStore.adjustAmount()
+
+const adjustAmount = (id, amount) => {
+  cartStore.adjustAmount(id, amount)
 }
-const removeItem = () => {
-  cartStore.removeItem()
+const removeItem = (id) => {
+  cartStore.removeItem(id)
 }
 cartStore.getItems()
 </script>
@@ -14,31 +17,39 @@ cartStore.getItems()
 <template>
   <div id="cart-container">
     <h1 id="list">購物車清單</h1>
-    <div class="product-box">
-      <div class="product-card" v-for="(item, index) in cartStore.items" :key="index" :id="item.id">
-        <img class="product-cover" :src="item.image_source" alt="" />
-        <p class="product-title">{{ item.name }}</p>
-        <p class="product-price">${{ item.price }}元</p>
-        <label for="amount"
-          >數量:<input
-            type="number"
-            id="amount"
-            min="1"
-            :value="item.amount"
-            @change="adjustAmount"
-        /></label>
-        <button class="remove" @click="removeItem">移除</button>
+    <loading-animation v-if="cartStore.isLoading"></loading-animation>
+    <div v-else>
+      <div class="product-box">
+        <div
+          class="product-card"
+          v-for="(item, index) in cartStore.items"
+          :key="index"
+          :id="item.id"
+        >
+          <img class="product-cover" :src="item.image_source" alt="" />
+          <p class="product-title">{{ item.name }}</p>
+          <p class="product-price">${{ item.price }}元</p>
+          <label for="amount"
+            >數量:<input
+              type="number"
+              id="amount"
+              min="1"
+              v-model="item.amount"
+              @change="adjustAmount(item.id, item.amount)"
+          /></label>
+          <button class="remove" @click="removeItem(item.id)">移除</button>
+        </div>
       </div>
-    </div>
-    <h1 id="total" v-if="!cartStore.isLoading">總金額:{{ cartStore.total }}元</h1>
-    <h1>收件人資訊</h1>
-    <section id="info">
-      <label for="">姓名：<input type="text" name="" id="" /></label>
-      <label for="">電話：<input type="tel" name="" id="" /></label>
-      <label for="">地址：<input type="text" name="" id="" /></label>
-    </section>
-    <div id="checkout-box">
-      <button id="checkout">結帳</button>
+      <h1 id="total" v-if="!cartStore.isLoading">總金額:{{ cartStore.total }}元</h1>
+      <h1>收件人資訊</h1>
+      <section id="info">
+        <label for="">姓名：<input type="text" name="" id="" /></label>
+        <label for="">電話：<input type="tel" name="" id="" /></label>
+        <label for="">地址：<input type="text" name="" id="" /></label>
+      </section>
+      <div id="checkout-box">
+        <button id="checkout">結帳</button>
+      </div>
     </div>
   </div>
 </template>
