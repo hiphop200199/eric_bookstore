@@ -1,15 +1,18 @@
 <script setup>
 import LoadingAnimation from '@/components/LoadingAnimation.vue'
-import { useCartStore } from '@/stores/store'
+import { useAuthStore, useCartStore } from '@/stores/store'
 import { ref } from 'vue'
 
 const cartStore = useCartStore()
-
+const authStore = useAuthStore()
 const adjustAmount = (id, amount) => {
   cartStore.adjustAmount(id, amount)
 }
 const removeItem = (id) => {
   cartStore.removeItem(id)
+}
+const handleCheckout = () => {
+  cartStore.handleCheckout()
 }
 cartStore.getItems()
 </script>
@@ -48,7 +51,7 @@ cartStore.getItems()
         <label for="">地址：<input type="text" name="" id="" /></label>
       </section>
       <div id="checkout-box">
-        <button id="checkout">結帳</button>
+        <button id="checkout" @click="handleCheckout">結帳</button>
       </div>
     </div>
   </div>

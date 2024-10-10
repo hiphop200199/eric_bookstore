@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/store'
+import CancelView from '@/views/CancelView.vue'
 import CartView from '@/views/CartView.vue'
 import DetailView from '@/views/DetailView.vue'
 import ForgotPasswordView from '@/views/forgotPasswordView.vue'
@@ -9,6 +10,7 @@ import MemberView from '@/views/MemberView.vue'
 import OrderDetailView from '@/views/OrderDetailView.vue'
 import OrderView from '@/views/OrderView.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import SuccessView from '@/views/SuccessView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -63,6 +65,16 @@ const router = createRouter({
       path: '/order-detail/:id',
       name: 'order-detail',
       component: OrderDetailView
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: SuccessView
+    },
+    {
+      path: '/cancel',
+      name: 'cancel',
+      component: CancelView
     }
   ],
   scrollBehavior(to, from, savedPosition) {

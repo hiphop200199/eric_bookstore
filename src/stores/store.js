@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
         })
         .then((res) => {
           message.value = ''
-          sessionStorage.setItem('token', document.cookie)
+          sessionStorage.setItem('token', document.cookie.slice(document.cookie.indexOf('=') + 1))
           sessionStorage.setItem('id', res.data[0].id)
           isLogin.value = sessionStorage.getItem('token')
           memberId.value = sessionStorage.getItem('id')
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
         })
         .then((res) => {
           message.value = ''
-          sessionStorage.setItem('token', document.cookie)
+          sessionStorage.setItem('token', document.cookie.slice(document.cookie.indexOf('=') + 1))
           sessionStorage.setItem('id', res.data[0].id)
           memberId.value = sessionStorage.getItem('id')
           isLogin.value = sessionStorage.getItem('token')
@@ -53,9 +53,9 @@ export const useAuthStore = defineStore('auth', () => {
           router.push({ path: '/' })
         })
         .catch((err) => {
-          if (err.response.data.message == 'These credentials do not match our records.') {
-            message.value = '帳號或密碼有誤'
-          }
+          // if (err.response.data.message == 'These credentials do not match our records.') {
+          //   message.value = '帳號或密碼有誤'
+          // }
           console.log(err)
         })
     })
@@ -214,7 +214,21 @@ export const useCartStore = defineStore('cart', () => {
         .catch((err) => console.log(err))
     })
   }
-  return { isLoading, items, total, getItems, addItem, removeItem, adjustAmount }
+  const handleCheckout = () => {
+    isLoading.value = true
+    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
+      axios
+        .post(baseUrl + 'checkout', {
+          id: sessionStorage.getItem('id')
+        })
+        .then((res) => {
+          console.log(res)
+          window.location.href = res.data.url
+        })
+        .catch((err) => console.log(err))
+    })
+  }
+  return { isLoading, items, total, getItems, addItem, removeItem, adjustAmount, handleCheckout }
 })
 
 export const useOrderStore = defineStore('order', () => {
