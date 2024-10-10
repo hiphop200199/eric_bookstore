@@ -1,11 +1,11 @@
 @use './value.scss';
 
 #layout {
-  #order-detail-container {
+  #order-container {
     position: relative;
     min-height: 93dvh;
+    padding: 0 6rem;
     background-color: value.$lightColor;
-    padding: 10px 6rem;
     h1 {
       font-size: 50px;
       text-align: center;
@@ -27,6 +27,35 @@
         border: 2px solid value.$darkBrown;
         box-shadow: 0px 0px 3px 1px value.$darkBrown;
         padding-left: 5px;
+        a {
+          text-decoration: none;
+          color: value.$darkBrown;
+        }
+      }
+    }
+    .pagination {
+      padding-block: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      button {
+        width: 2rem;
+        height: 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        &.active {
+          background-color: value.$darkBrown;
+          color: white;
+        }
+        &:disabled {
+          cursor: not-allowed;
+          color: grey;
+        }
+        img {
+          width: 100%;
+          height: auto;
+        }
       }
     }
   }
@@ -34,19 +63,9 @@
 
 @media screen and (max-width: 576px) {
   #layout {
-    #order-detail-container {
-      flex-direction: column;
-      align-items: center;
-      padding: 10px 0.5rem;
-      * {
-        margin-inline: 0px;
-      }
-      img {
-        width: 100%;
-        height: auto;
-      }
-      #info {
-        width: 100%;
+    #order-container {
+      padding: 0 0.5rem;
+      #product-box {
       }
     }
   }
@@ -54,18 +73,9 @@
 
 @media screen and (min-width: 576px) and (max-width: 768px) {
   #layout {
-    #order-detail-container {
-      flex-direction: column;
-      padding: 10px 1rem;
-      * {
-        margin-inline: 0px;
-      }
-      img {
-        width: 100%;
-        height: auto;
-      }
-      #info {
-        width: 100%;
+    #order-container {
+      padding: 0 1rem;
+      #product-box {
       }
     }
   }
@@ -73,25 +83,20 @@
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
   #layout {
-    #order-detail-container {
-      padding: 10px 1.5rem;
+    #order-container {
+      padding: 0 1.5rem;
+      #product-box {
+      }
     }
   }
 }
 
 @media screen and (min-width: 992px) and (max-width: 1440px) {
   #layout {
-    #order-detail-container {
-      padding: 10px 3rem;
+    #order-container {
+      padding: 0 3rem;
+      #product-box {
+      }
     }
-  }
-}
-
-@keyframes rot {
-  from {
-    rotate: 0turn;
-  }
-  to {
-    rotate: 1turn;
   }
 }

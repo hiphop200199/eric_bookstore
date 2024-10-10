@@ -1,27 +1,30 @@
 <script setup>
-import { useAuthStore, useProductStore } from '@/stores/store'
-import router from '@/router'
-import { computed } from 'vue'
+import { useOrderStore } from '@/stores/store'
 import { useRoute } from 'vue-router'
-const authStore = useAuthStore()
-const productStore = useProductStore()
+import LoadingAnimation from '@/components/LoadingAnimation.vue'
+const orderStore = useOrderStore()
 const route = useRoute()
-const isLogin = authStore.isLogin
-const product = computed(() => productStore.product)
-let bookId = route.params.id
+const orderId = route.params.id
 
-const handlePurchase = () => {
-  isLogin === true ? router.push({ path: '/cart' }) : router.push({ path: '/login' })
+const getOrder = (id) => {
+  orderStore.getOrder(id)
 }
-const handleCart = () => {
-  isLogin === true ? router.push({ path: '/list' }) : router.push({ path: '/login' })
-}
-const getProduct = (id) => {
-  productStore.getProduct(id)
-}
-getProduct(bookId)
+getOrder(orderId)
 </script>
 
 <template>
-  <div id="order-detail-container"></div>
+  <div id="order-detail-container">
+    <h1 id="list">訂單明細</h1>
+    <loading-animation v-if="orderStore.isLoading"></loading-animation>
+    <div class="product-box" v-else>
+      <div class="product-card" v-for="(o, i) in orderStore.order" :key="i" :id="o.id">
+        <p class="product-id">索引編號：{{ i }}</p>
+        <p class="product-time">商品名稱：{{ o.name }}</p>
+        <p class="product-price">單價：${{ o.price }}元</p>
+        <p class="product-price">數量：{{ o.amount }}</p>
+        <p class="product-price">折扣：${{ o.discount }}元</p>
+        <p class="product-price">總額：${{ o.final_price }}元</p>
+      </div>
+    </div>
+  </div>
 </template>

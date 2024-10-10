@@ -1,4 +1,4 @@
-import { computed, h, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import router from '@/router'
 import axios from 'axios'
@@ -85,6 +85,20 @@ export const useAuthStore = defineStore('auth', () => {
       })
       .catch((err) => console.log(err))
   }
+  const editUser = (phone, address) => {
+    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
+      axios
+        .put(baseUrl + 'editUser', {
+          id: memberId.value,
+          phone: phone,
+          address: address
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => console.log(err))
+    })
+  }
   return {
     user,
     isLoading,
@@ -94,7 +108,8 @@ export const useAuthStore = defineStore('auth', () => {
     handleRegister,
     handleLogout,
     handleLogIn,
-    getUser
+    getUser,
+    editUser
   }
 })
 
@@ -200,4 +215,25 @@ export const useCartStore = defineStore('cart', () => {
     })
   }
   return { isLoading, items, total, getItems, addItem, removeItem, adjustAmount }
+})
+
+export const useOrderStore = defineStore('order', () => {
+  const isLoading = ref(true)
+  const orders = ref([])
+  const order = ref([])
+  const getOrders = () => {
+    isLoading.value = true
+    // axios.get(baseUrl + 'getOrders').then((res) => {
+    //   // orders.value = res.data.data
+    //   isLoading.value = false
+    // })
+  }
+  const getOrder = (index) => {
+    isLoading.value = true
+    // axios.get(baseUrl + 'getOrder', { params: { id: index } }).then((res) => {
+    //   // order.value = res.data
+    //   isLoading.value = false
+    // })
+  }
+  return { isLoading, orders, order, getOrders, getOrder }
 })

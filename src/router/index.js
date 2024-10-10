@@ -60,7 +60,7 @@ const router = createRouter({
       component: OrderView
     },
     {
-      path: '/order-detail',
+      path: '/order-detail/:id',
       name: 'order-detail',
       component: OrderDetailView
     }

@@ -1,38 +1,33 @@
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/store'
+import { useAuthStore, useOrderStore } from '@/stores/store'
+import LoadingAnimation from '@/components/LoadingAnimation.vue'
+
 const authStore = useAuthStore()
+const orderStore = useOrderStore()
 const isLogin = authStore.isLogin
 </script>
 
 <template>
-  <div id="cart-container">
-    <h1 id="list">購物車清單</h1>
-    <div class="product-box">
-      <div class="product-card">
-        <img class="product-cover" src="../assets/man-1690965_640.jpg" alt="" />
-        <p class="product-title">123</p>
-        <p class="product-price">$111</p>
-        <label for="amount">數量:<input type="number" name="" id="amount" min="1" /></label>
-        <button class="remove">移除</button>
+  <div id="order-container">
+    <h1 id="list">訂單清單</h1>
+    <loading-animation v-if="orderStore.isLoading"></loading-animation>
+    <div class="product-box" v-else>
+      <div
+        class="product-card"
+        v-for="(order, index) in orderStore.orders"
+        :key="index"
+        :id="order.id"
+      >
+        <p class="product-id">
+          訂單編號：{{ order.id
+          }}<router-link :to="'order-detail/' + order.id">(詳細內容)</router-link>
+        </p>
+        <p class="product-time">訂購時間：{{ order.created_at }}</p>
+        <p class="product-time">付款方式：{{ order.payment }}</p>
+        <p class="product-price">訂單金額：${{ order.total_price }}元</p>
+        <p class="product-price">處理狀態：{{ order.status }}</p>
       </div>
-      <div class="product-card">
-        <img class="product-cover" src="../assets/man-1690965_640.jpg" alt="" />
-        <p class="product-title">123</p>
-        <p class="product-price">$111</p>
-        <label for="amount">數量:<input type="number" name="" id="amount" min="1" /></label>
-        <button class="remove">移除</button>
-      </div>
-    </div>
-    <h1 id="total">總金額:1000元</h1>
-    <h1>收件人資訊</h1>
-    <section id="info">
-      <label for="">姓名：<input type="text" name="" id="" /></label>
-      <label for="">電話：<input type="tel" name="" id="" /></label>
-      <label for="">地址：<input type="text" name="" id="" /></label>
-    </section>
-    <div id="checkout-box">
-      <button id="checkout">結帳</button>
     </div>
   </div>
 </template>
