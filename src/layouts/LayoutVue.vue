@@ -22,22 +22,25 @@ console.log(authStore.isLogin)
         ><img src="../assets/book.png" alt="logo"
       /></a>
       <nav>
-        <section v-if="authStore.isLogin !== null">
-          <button @click="handleLogout">
+        <section>
+          <router-link to="/list" title="商品查詢"
+            ><img src="https://cdn-icons-png.flaticon.com/128/1621/1621643.png" alt=""
+          /></router-link>
+          <button v-if="authStore.isLogin !== null" @click="handleLogout">
             <img src="../assets/log-out.png" alt="" id="logout" title="登出" />
           </button>
-          <router-link to="/member" title="會員資料"
+          <router-link v-if="authStore.isLogin !== null" to="/member" title="會員資料"
             ><img src="../assets/user.png" alt="" id="user"
           /></router-link>
-          <router-link to="/order" title="訂單資料"
+          <router-link v-if="authStore.isLogin !== null" to="/order" title="訂單資料"
             ><img src="../assets/view-list.png" alt="" id="order"
           /></router-link>
-          <router-link to="/cart" title="購物車">
+          <router-link v-if="authStore.isLogin !== null" to="/cart" title="購物車">
             <img src="../assets/shopping-cart.png" alt="" id="cart" />
             <!-- <span id="cart-amount" :class="">(1)</span> -->
           </router-link>
         </section>
-        <router-link to="/login" title="登入" v-else
+        <router-link to="/login" title="登入" v-if="authStore.isLogin === null"
           ><img src="../assets/log-in.png" alt="" id="login"
         /></router-link>
         <button id="aside-menu-btn" @click="toggleAsideMenu">
@@ -61,13 +64,22 @@ console.log(authStore.isLogin)
       /></a>
     </footer>
     <aside ref="asideMenu">
-      <section v-if="authStore.isLogin !== null">
-        <button @click="handleLogout">登出</button>
-        <button><router-link to="/member">會員資料</router-link></button>
-        <button><router-link to="/order">訂單查詢</router-link></button>
-        <button><router-link to="/cart">購物車</router-link></button>
+      <section>
+        <button><router-link to="/list">商品查詢</router-link></button>
+        <button v-if="authStore.isLogin !== null" @click="handleLogout">登出</button>
+        <button v-if="authStore.isLogin !== null">
+          <router-link to="/member">會員資料</router-link>
+        </button>
+        <button v-if="authStore.isLogin !== null">
+          <router-link to="/order">訂單查詢</router-link>
+        </button>
+        <button v-if="authStore.isLogin !== null">
+          <router-link to="/cart">購物車</router-link>
+        </button>
       </section>
-      <button v-else @click="toggleAsideMenu"><router-link to="/login">登入</router-link></button>
+      <button v-if="authStore.isLogin === null" @click="toggleAsideMenu">
+        <router-link to="/login">登入</router-link>
+      </button>
     </aside>
     <a href="#" id="to-top"><img src="../assets/up-arrow.png" alt="" /></a>
   </div>

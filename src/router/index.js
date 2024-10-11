@@ -72,6 +72,13 @@ const router = createRouter({
       component: SuccessView
     },
     {
+      path: '/success?session_id=:id',
+      redirect: (to) => {
+        return { path: 'success', query: { q: to.query.session_id } }
+      }
+    },
+
+    {
       path: '/cancel',
       name: 'cancel',
       component: CancelView
@@ -93,7 +100,9 @@ router.beforeEach(async (to, from) => {
     (to.name === 'member' ||
       to.name === 'order' ||
       to.name === 'order-detail' ||
-      to.name === 'cart')
+      to.name === 'cart' ||
+      to.name === 'success' ||
+      to.name === 'cancel')
   ) {
     // redirect the user to the login page
     return { name: 'login' }

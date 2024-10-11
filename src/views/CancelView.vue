@@ -1,6 +1,6 @@
 <template>
-  <div id="member-container">
-    <h1>結帳取消</h1>
+  <div id="homepage-container">
+    <h1 class="checkout-result-title">結帳取消</h1>
     <section id="to-search">
       <h3>搜尋</h3>
       <p>尋找最喜歡的那一本書</p>

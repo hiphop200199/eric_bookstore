@@ -228,7 +228,27 @@ export const useCartStore = defineStore('cart', () => {
         .catch((err) => console.log(err))
     })
   }
-  return { isLoading, items, total, getItems, addItem, removeItem, adjustAmount, handleCheckout }
+  const checkoutSuccess = (id) => {
+    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
+      axios
+        .put(baseUrl + 'success', {
+          session_id: id
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err))
+    })
+  }
+  return {
+    isLoading,
+    items,
+    total,
+    getItems,
+    addItem,
+    removeItem,
+    adjustAmount,
+    handleCheckout,
+    checkoutSuccess
+  }
 })
 
 export const useOrderStore = defineStore('order', () => {
@@ -237,17 +257,25 @@ export const useOrderStore = defineStore('order', () => {
   const order = ref([])
   const getOrders = () => {
     isLoading.value = true
-    // axios.get(baseUrl + 'getOrders').then((res) => {
-    //   // orders.value = res.data.data
-    //   isLoading.value = false
-    // })
+    axios
+      .get(baseUrl + 'getOrders', { params: { id: sessionStorage.getItem('id') } })
+      .then((res) => {
+        orders.value = res.data
+        isLoading.value = false
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
   }
-  const getOrder = (index) => {
+  const getOrder = (id) => {
     isLoading.value = true
-    // axios.get(baseUrl + 'getOrder', { params: { id: index } }).then((res) => {
-    //   // order.value = res.data
-    //   isLoading.value = false
-    // })
+    axios
+      .get(baseUrl + 'getOrder', { params: { id: id } })
+      .then((res) => {
+        order.value = res.data
+        isLoading.value = false
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
   }
   return { isLoading, orders, order, getOrders, getOrder }
 })
