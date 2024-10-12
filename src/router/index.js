@@ -1,3 +1,4 @@
+import NotFound404 from '@/components/NotFound404.vue'
 import { useAuthStore } from '@/stores/store'
 import CancelView from '@/views/CancelView.vue'
 import CartView from '@/views/CartView.vue'
@@ -9,6 +10,7 @@ import LoginView from '@/views/LoginView.vue'
 import MemberView from '@/views/MemberView.vue'
 import OrderDetailView from '@/views/OrderDetailView.vue'
 import OrderView from '@/views/OrderView.vue'
+import PasswordResetView from '@/views/PasswordResetView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import SuccessView from '@/views/SuccessView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -47,6 +49,28 @@ const router = createRouter({
       component: ForgotPasswordView
     },
     {
+      path: '/password-reset/:token',
+      name: 'password-reset',
+      component: PasswordResetView
+    },
+    {
+      path: '/password-reset/:token?email=:email',
+      redirect: (to) => {
+        return {
+          name: 'password-reset',
+          query: { email: to.query.email }
+        }
+      }
+    },
+    {
+      path: '/password-reset',
+      redirect: (to) => {
+        return {
+          name: '404NotFound'
+        }
+      }
+    },
+    {
       path: '/cart',
       name: 'cart',
       component: CartView
@@ -82,6 +106,11 @@ const router = createRouter({
       path: '/cancel',
       name: 'cancel',
       component: CancelView
+    },
+    {
+      path: '/not-found',
+      name: '404NotFound',
+      component: NotFound404
     }
   ],
   scrollBehavior(to, from, savedPosition) {

@@ -1,12 +1,17 @@
 <script setup>
+import { useAuthStore } from '@/stores/store'
 import { ref } from 'vue'
 const account = ref('')
-const handleForgotPassword = () => {}
+const authStore = useAuthStore()
+const handleForgotPassword = (e) => {
+  e.preventDefault()
+  authStore.forgotPassword(account.value)
+}
 </script>
 
 <template>
   <div id="forgot-password-container">
-    <form @submit="handleForgotPassword">
+    <form @submit="handleForgotPassword($event)">
       <input
         type="email"
         name=""
@@ -15,6 +20,7 @@ const handleForgotPassword = () => {}
         v-model="account"
         required
       />
+      <p id="message" ref="message">{{ authStore.message }}</p>
       <div id="buttons">
         <button type="submit">提交</button>
       </div>

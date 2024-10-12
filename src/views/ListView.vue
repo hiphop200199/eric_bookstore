@@ -1,17 +1,20 @@
 <script setup>
 import LoadingAnimation from '@/components/LoadingAnimation.vue'
 import { useProductStore } from '@/stores/store'
-import { computed } from 'vue'
-
+import { computed, ref } from 'vue'
+const text = ref('')
 const productStore = useProductStore()
 const products = computed(() => productStore.products)
 const productsPagination = computed(() => productStore.productsPagination)
-const monthlyNewProducts = computed(() => productStore.monthlyNewProducts)
+//const monthlyNewProducts = computed(() => productStore.monthlyNewProducts)
 const getProducts = (url = null) => {
   productStore.getProducts(url)
 }
-const getMonthlyNewProducts = () => {
+/* const getMonthlyNewProducts = () => {
   productStore.getMonthlyNewProducts()
+} */
+const ambiguousSearch = () => {
+  productStore.getProducts(null, text.value)
 }
 const htmlDecode = (str) => {
   let txt = document.createElement('textarea')
@@ -25,13 +28,13 @@ const htmlDecode = (str) => {
     return str
   }
 }
-getMonthlyNewProducts()
-getProducts()
+// getMonthlyNewProducts()
+//getProducts()
 </script>
 
 <template>
   <div id="product-container">
-    <h1>本月新書</h1>
+    <!-- <h1>本月新書</h1>
     <loading-animation v-if="productStore.isLoading"></loading-animation>
     <div class="product-box" v-else>
       <div class="product-card" v-for="(product, index) in monthlyNewProducts" :key="index">
@@ -41,16 +44,22 @@ getProducts()
         <p class="product-title">{{ product.name }}</p>
         <p class="product-price">${{ product.price }}</p>
       </div>
-    </div>
-    <h1>特定書本查尋</h1>
+    </div> -->
+    <h1>書本查尋</h1>
     <loading-animation v-if="productStore.isLoading"></loading-animation>
     <div v-else>
-      <section id="class-filters">
+      <!--  <section id="class-filters">
         <button>文學</button>
         <button>科技</button>
         <button>語言</button>
-      </section>
-      <input type="search" name="" id="ambiguous-search" placeholder="請輸入關鍵字..." />
+      </section> -->
+      <input
+        type="search"
+        v-model="text"
+        id="ambiguous-search"
+        @change="ambiguousSearch"
+        placeholder="請輸入關鍵字..."
+      />
       <div class="product-box">
         <div class="product-card" v-for="(product, index) in products" :key="index">
           <router-link :to="'detail/' + product.id">

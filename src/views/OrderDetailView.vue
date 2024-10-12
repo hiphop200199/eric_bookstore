@@ -18,6 +18,7 @@ getOrder(orderId)
     <loading-animation v-if="orderStore.isLoading"></loading-animation>
     <div class="product-box" v-else>
       <div class="product-card" v-for="(o, i) in orderStore.order" :key="i" :id="o.id">
+        <img :src="o.image_source" alt="" />
         <p class="product-id">索引編號：{{ i }}</p>
         <p class="product-time">商品名稱：{{ o.name }}</p>
         <p class="product-price">單價：${{ o.price }}元</p>

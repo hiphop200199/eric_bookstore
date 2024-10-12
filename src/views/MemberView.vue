@@ -60,7 +60,7 @@ onMounted(() => {
       </section>
       <section id="links">
         <router-link to="/order">訂單資料</router-link>
-        <router-link>重設密碼</router-link>
+        <!-- <router-link>重設密碼</router-link> -->
       </section>
     </section>
   </div>

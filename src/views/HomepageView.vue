@@ -1,19 +1,13 @@
 <script setup>
+import LoadingAnimation from '@/components/LoadingAnimation.vue'
+import { useProductStore } from '@/stores/store'
 import { onMounted, ref } from 'vue'
-const cardData = [
-  { title: 'lorem', price: '$300' },
-  { title: 'yayaya', price: '$400' },
-  { title: 'vbn', price: '$123' },
-  { title: 'lore', price: '$300' },
-  { title: 'yayay', price: '$400' },
-  { title: 'vb', price: '$123' },
-  { title: 'loremj', price: '$300' },
-  { title: 'yayayaj', price: '$400' }
-]
+
 const cardWidth = 300
 let slideDistance = ref(0)
 let scrollY = ref(0)
 const cards = ref([])
+const productStore = useProductStore()
 let slide
 onMounted(() => {
   window.addEventListener('scroll', () => (scrollY.value = window.scrollY))
@@ -22,24 +16,31 @@ onMounted(() => {
     cards.value.style.transform = `translateX(${slideDistance.value}px)`
   }
 })
+productStore.getProducts()
+productStore.getPopularProducts()
 </script>
 
 <template>
   <div id="homepage-container">
     <img id="img-auto-slide" src="../assets/man-1690965_640.jpg" alt="" />
     <h1>熱門商品</h1>
-    <div id="new-items-slider">
+    <loading-animation v-if="productStore.isLoading"></loading-animation>
+    <div id="new-items-slider" v-else>
       <button id="slide-left" @click="slide('left')" v-if="slideDistance > -3040">
         <img src="../assets/left-arrow.png" alt="" />
       </button>
       <div id="slider">
         <div id="cards" ref="cards">
-          <div class="product-card" v-for="(card, index) in cardData" :key="index">
-            <router-link to="detail">
-              <img class="product-cover" src="../assets/castle.png" alt="" />
+          <div
+            class="product-card"
+            v-for="(card, index) in productStore.popularProducts"
+            :key="index"
+          >
+            <router-link :to="'detail/' + card.id">
+              <img class="product-cover" :src="card.image_source" alt="" />
             </router-link>
-            <p class="product-title">{{ card.title }}</p>
-            <p class="product-price">{{ card.price }}</p>
+            <p class="product-title">{{ card.name }}</p>
+            <p class="product-price">${{ card.price }}元</p>
           </div>
         </div>
       </div>

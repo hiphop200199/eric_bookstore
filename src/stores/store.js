@@ -5,6 +5,7 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true
 axios.defaults.withXSRFToken = true
+
 const baseUrl = 'http://localhost:8000/'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -12,7 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isLogin = ref(sessionStorage.getItem('token'))
   const isLoading = ref(true)
   const message = ref('')
-  const user = ref({})
+  const user = ref(JSON.parse(sessionStorage.getItem('user')))
   const handleRegister = (name, email, password, passwordConfirm) => {
     message.value = '請稍候...'
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
@@ -51,37 +52,52 @@ export const useAuthStore = defineStore('auth', () => {
           console.log(res)
 
           router.push({ path: '/' })
+          getUser()
+          let order = useOrderStore()
+          order.getOrders()
         })
         .catch((err) => {
-          // if (err.response.data.message == 'These credentials do not match our records.') {
-          //   message.value = '帳號或密碼有誤'
-          // }
+          if (err.response.data.message === 'These credentials do not match our records.') {
+            message.value = '帳號或密碼有誤'
+          }
           console.log(err)
         })
     })
   }
   const handleLogout = () => {
+    let order = useOrderStore()
+    let products = useProductStore()
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .post(baseUrl + 'logout')
         .then(() => {
-          sessionStorage.removeItem('token')
           sessionStorage.removeItem('id')
+          sessionStorage.removeItem('token')
+          sessionStorage.removeItem('user')
+          sessionStorage.removeItem('orders')
           memberId.value = sessionStorage.getItem('id')
           isLogin.value = sessionStorage.getItem('token')
+          user.value = sessionStorage.getItem('user')
+          order.orders.value = sessionStorage.getItem('orders')
+
           router.push({ path: '/' })
         })
         .catch((err) => console.log(err))
     })
   }
   const getUser = () => {
+    if (user.value) {
+      isLoading.value = false
+      return
+    }
     isLoading.value = true
     axios
       .get(baseUrl + 'getUser', { params: { id: memberId.value } })
       .then((res) => {
-        user.value = res.data[0]
         isLoading.value = false
         console.log(res)
+        sessionStorage.setItem('user', JSON.stringify(res.data[0]))
+        user.value = JSON.parse(sessionStorage.getItem('user'))
       })
       .catch((err) => console.log(err))
   }
@@ -95,8 +111,51 @@ export const useAuthStore = defineStore('auth', () => {
         })
         .then((res) => {
           console.log(res)
+          sessionStorage.setItem('user', JSON.stringify(res.data))
+          user.value = JSON.parse(sessionStorage.getItem('user'))
         })
         .catch((err) => console.log(err))
+    })
+  }
+  const forgotPassword = (email) => {
+    message.value = '請稍候...'
+    axios
+      .get(baseUrl + 'sanctum/csrf-cookie')
+      .then(() => {
+        axios
+          .post(baseUrl + 'forgot-password', {
+            email: email
+          })
+          .then((res) => {
+            message.value = res.data.status
+            console.log(res)
+            setTimeout(() => (message.value = ''), 3000)
+          })
+          .catch((err) => console.log(err))
+      })
+      .catch((err) => console.log(err))
+  }
+  const passwordReset = (token, email, password, passwordConfirm) => {
+    message.value = '請稍候...'
+    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
+      axios
+        .post(baseUrl + 'reset-password', {
+          token: token,
+          email: email,
+          password: password,
+          password_confirmation: passwordConfirm
+        })
+        .then((res) => {
+          message.value = res.data.status
+          console.log(res)
+          setTimeout(() => {
+            message.value = ''
+            router.push({ path: '/' })
+          }, 3000)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     })
   }
   return {
@@ -109,33 +168,49 @@ export const useAuthStore = defineStore('auth', () => {
     handleLogout,
     handleLogIn,
     getUser,
-    editUser
+    editUser,
+    forgotPassword,
+    passwordReset
   }
 })
 
 export const useProductStore = defineStore('product', () => {
   const isLoading = ref(true)
-  const products = ref([])
-  const productsPagination = ref({})
+  const products = ref(JSON.parse(sessionStorage.getItem('products-list')))
+  const listUrl = ref(sessionStorage.getItem('list-url'))
+  const productsPagination = ref(JSON.parse(sessionStorage.getItem('paginate')))
   const monthlyNewProducts = ref([])
+  const popularProducts = ref(JSON.parse(sessionStorage.getItem('popular-list')))
   const product = ref({})
-  const getProducts = (url = null) => {
-    isLoading.value = true
-    let finalUrl
-    if (url) finalUrl = url
-    else finalUrl = baseUrl + 'getProducts'
-    axios.get(finalUrl).then((res) => {
-      products.value = res.data.data
-      productsPagination.value = res.data
+  const getProducts = (url = null, text = null) => {
+    if (
+      (url !== null && url === listUrl.value) ||
+      (url === null && listUrl.value !== null && text === null)
+    ) {
       isLoading.value = false
-    })
+      return
+    } else {
+      let finalUrl = url || baseUrl + 'getProducts?page=1'
+      if (text) finalUrl += '&text=' + text
+      isLoading.value = true
+      axios.get(finalUrl).then((res) => {
+        isLoading.value = false
+        console.log(res)
+        sessionStorage.setItem('products-list', JSON.stringify(res.data.data))
+        products.value = JSON.parse(sessionStorage.getItem('products-list'))
+        sessionStorage.setItem('paginate', JSON.stringify(res.data))
+        productsPagination.value = JSON.parse(sessionStorage.getItem('paginate'))
+        sessionStorage.setItem('list-url', finalUrl)
+        listUrl.value = sessionStorage.getItem('list-url')
+      })
+    }
   }
-  const getMonthlyNewProducts = () => {
+  /* const getMonthlyNewProducts = () => {
     isLoading.value = true
     axios.get(baseUrl + 'getMonthlyNewProducts').then((res) => {
       monthlyNewProducts.value = res.data.data
     })
-  }
+  } */
   const getProduct = (index) => {
     isLoading.value = true
     axios.get(baseUrl + 'getProduct', { params: { id: index } }).then((res) => {
@@ -143,15 +218,34 @@ export const useProductStore = defineStore('product', () => {
       isLoading.value = false
     })
   }
+  const getPopularProducts = () => {
+    if (popularProducts.value) {
+      isLoading.value = false
+      return
+    }
+    isLoading.value = true
+    axios
+      .get(baseUrl + 'getPopularProducts')
+      .then((res) => {
+        console.log(res)
+        sessionStorage.setItem('popular-list', JSON.stringify(res.data))
+        popularProducts.value = JSON.parse(sessionStorage.getItem('popular-list'))
+        isLoading.value = false
+      })
+      .catch((err) => console.log(err))
+  }
   return {
+    listUrl,
     isLoading,
     product,
     products,
     monthlyNewProducts,
+    popularProducts,
     productsPagination,
     getProducts,
     getProduct,
-    getMonthlyNewProducts
+    getPopularProducts
+    //getMonthlyNewProducts
   }
 })
 
@@ -232,7 +326,8 @@ export const useCartStore = defineStore('cart', () => {
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .put(baseUrl + 'success', {
-          session_id: id
+          session_id: id,
+          id: sessionStorage.getItem('id')
         })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
@@ -253,9 +348,14 @@ export const useCartStore = defineStore('cart', () => {
 
 export const useOrderStore = defineStore('order', () => {
   const isLoading = ref(true)
-  const orders = ref([])
+  const orders = ref(JSON.parse(sessionStorage.getItem('orders')))
   const order = ref([])
   const getOrders = () => {
+    if (orders.value) {
+      isLoading.value = false
+      return
+    }
+
     isLoading.value = true
     axios
       .get(baseUrl + 'getOrders', { params: { id: sessionStorage.getItem('id') } })
@@ -263,6 +363,8 @@ export const useOrderStore = defineStore('order', () => {
         orders.value = res.data
         isLoading.value = false
         console.log(res)
+        sessionStorage.setItem('orders', JSON.stringify(res.data))
+        orders.value = JSON.parse(sessionStorage.getItem('orders'))
       })
       .catch((err) => console.log(err))
   }
