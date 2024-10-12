@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoading = ref(true)
   const message = ref('')
   const user = ref(JSON.parse(sessionStorage.getItem('user')))
-  const handleRegister = (name, email, password, passwordConfirm) => {
+  const handleRegister = (name, email, password, passwordConfirm, tel, address) => {
     message.value = '請稍候...'
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
@@ -22,7 +22,9 @@ export const useAuthStore = defineStore('auth', () => {
           name: name,
           email: email,
           password: password,
-          password_confirmation: passwordConfirm
+          password_confirmation: passwordConfirm,
+          tel: tel,
+          address: address
         })
         .then((res) => {
           message.value = ''
@@ -266,7 +268,8 @@ export const useCartStore = defineStore('cart', () => {
       })
       .catch((err) => console.log(err))
   }
-  const addItem = (id) => {
+  const addItem = (id, mode) => {
+    isLoading.value = true
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .post(baseUrl + 'addItem', {
@@ -275,12 +278,18 @@ export const useCartStore = defineStore('cart', () => {
         })
         .then((res) => {
           console.log(res)
-          router.push({ path: '/list' })
+          isLoading.value = false
+          if (mode === 'P') {
+            router.push({ path: '/cart' })
+          } else {
+            router.push({ path: '/list' })
+          }
         })
         .catch((err) => console.log(err))
     })
   }
   const removeItem = (id) => {
+    isLoading.value = true
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .delete(baseUrl + 'removeItem', {
@@ -289,6 +298,7 @@ export const useCartStore = defineStore('cart', () => {
           }
         })
         .then((res) => {
+          isLoading.value = false
           console.log(res)
           window.location.reload()
         })
@@ -296,6 +306,7 @@ export const useCartStore = defineStore('cart', () => {
     })
   }
   const adjustAmount = (id, amount) => {
+    isLoading.value = true
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .put(baseUrl + 'editItem', {
@@ -303,17 +314,21 @@ export const useCartStore = defineStore('cart', () => {
           amount: amount
         })
         .then((res) => {
+          isLoading.value = false
           window.location.reload()
         })
         .catch((err) => console.log(err))
     })
   }
-  const handleCheckout = () => {
+  const handleCheckout = (name, tel, address) => {
     isLoading.value = true
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .post(baseUrl + 'checkout', {
-          id: sessionStorage.getItem('id')
+          id: sessionStorage.getItem('id'),
+          receiverName: name,
+          receiverTel: tel,
+          receiverAddress: address
         })
         .then((res) => {
           console.log(res)

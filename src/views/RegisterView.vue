@@ -6,6 +6,8 @@ const account = ref('')
 const password = ref('')
 const password_confirmation = ref('')
 const name = ref('')
+const tel = ref('')
+const address = ref('')
 const message = ref(null)
 const isLogin = computed(() => authStore.isLogin)
 const handleRegister = ($event) => {
@@ -17,7 +19,14 @@ const handleRegister = ($event) => {
   } else {
     message.value.classList.remove('is-error')
     message.value.innerText = ''
-    authStore.handleRegister(name.value, account.value, password.value, password_confirmation.value)
+    authStore.handleRegister(
+      name.value,
+      account.value,
+      password.value,
+      password_confirmation.value,
+      tel.value,
+      address.value
+    )
   }
 }
 </script>
@@ -41,6 +50,8 @@ const handleRegister = ($event) => {
         required
         minlength="8"
       />
+      <input type="tel" v-model="tel" required placeholder="請輸入電話..." />
+      <input type="text" v-model="address" required placeholder="請輸入送貨地址..." />
       <p id="message" ref="message"></p>
       <div id="buttons">
         <button type="submit">註冊</button>

@@ -1,10 +1,14 @@
 <script setup>
 import LoadingAnimation from '@/components/LoadingAnimation.vue'
 import { useAuthStore, useCartStore } from '@/stores/store'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const cartStore = useCartStore()
 const authStore = useAuthStore()
+const receiverName = ref('')
+const receiverTel = ref('')
+const receiverAddress = ref('')
+const same = ref(null)
 const adjustAmount = (id, amount) => {
   cartStore.adjustAmount(id, amount)
 }
@@ -12,9 +16,19 @@ const removeItem = (id) => {
   cartStore.removeItem(id)
 }
 const handleCheckout = () => {
-  cartStore.handleCheckout()
+  cartStore.handleCheckout(receiverName.value, receiverTel.value, receiverAddress.value)
 }
+let sameWithUser
 cartStore.getItems()
+onMounted(() => {
+  sameWithUser = () => {
+    if (same.value.checked) {
+      receiverName.value = authStore.user.name
+      receiverTel.value = authStore.user.phone
+      receiverAddress.value = authStore.user.address
+    }
+  }
+})
 </script>
 
 <template>
@@ -46,9 +60,10 @@ cartStore.getItems()
       <h1 id="total" v-if="!cartStore.isLoading">總金額:{{ cartStore.total }}元</h1>
       <h1>收件人資訊</h1>
       <section id="info">
-        <label for="">姓名：<input type="text" name="" id="" /></label>
-        <label for="">電話：<input type="tel" name="" id="" /></label>
-        <label for="">地址：<input type="text" name="" id="" /></label>
+        <label><input type="checkbox" @change="sameWithUser" ref="same" />同訂購人</label>
+        <label for="">姓名：<input type="text" v-model="receiverName" required /></label>
+        <label for="">電話：<input type="tel" v-model="receiverTel" required /></label>
+        <label for="">地址：<input type="text" v-model="receiverAddress" required /></label>
       </section>
       <div id="checkout-box">
         <button id="checkout" @click="handleCheckout">結帳</button>

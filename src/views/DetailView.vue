@@ -10,9 +10,11 @@ const route = useRoute()
 const product = computed(() => productStore.product)
 const bookId = route.params.id
 
-const handlePurchase = () => {}
+const handlePurchase = (id) => {
+  cartStore.addItem(id, 'P')
+}
 const handleCart = (id) => {
-  cartStore.addItem(id)
+  cartStore.addItem(id, 'C')
 }
 const getProduct = (id) => {
   productStore.getProduct(id)
@@ -38,7 +40,7 @@ getProduct(bookId)
       </p>
       <p>價格:${{ product.price }}元</p>
       <section id="buttons">
-        <button @click="handlePurchase" :disabled="product.stock == 0">直接購買</button>
+        <button @click="handlePurchase(bookId)" :disabled="product.stock == 0">直接購買</button>
         <button @click="handleCart(bookId)" :disabled="product.stock == 0">加入購物車</button>
       </section>
       <p>

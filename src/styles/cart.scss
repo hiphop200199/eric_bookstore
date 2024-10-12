@@ -76,6 +76,7 @@
         background-color: transparent;
         margin-block: 5px;
         color: value.$darkBrown;
+        accent-color: value.$darkBrown;
         &:focus {
           border-color: value.$lightBrown;
         }
