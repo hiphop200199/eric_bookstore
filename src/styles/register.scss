@@ -26,13 +26,9 @@
         }
       }
       #message {
-        display: none;
-        &.is-error {
-          display: block;
-          color: red;
-          margin-block: 20px;
-          text-align: center;
-        }
+        color: red;
+        margin-block: 20px;
+        text-align: center;
       }
       #buttons {
         margin-bottom: 1rem;

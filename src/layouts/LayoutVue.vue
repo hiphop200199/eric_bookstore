@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from '@/stores/store'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
 const authStore = useAuthStore()
 const asideMenuPic = ref(null)
@@ -13,6 +13,10 @@ const handleLogout = () => {
   authStore.handleLogout()
 }
 console.log(authStore.isLogin)
+onMounted(() => {
+  let asideLogoutBtn = document.getElementById('aside-logout')
+  asideLogoutBtn.addEventListener('click', toggleAsideMenu)
+})
 </script>
 
 <template>
@@ -65,21 +69,23 @@ console.log(authStore.isLogin)
     </footer>
     <aside ref="asideMenu">
       <section>
-        <button><router-link to="/list">商品查詢</router-link></button>
-        <button v-if="authStore.isLogin !== null" @click="handleLogout">登出</button>
-        <button v-if="authStore.isLogin !== null">
+        <button @click="toggleAsideMenu"><router-link to="/list">商品查詢</router-link></button>
+        <button @click="toggleAsideMenu" v-if="authStore.isLogin !== null">
           <router-link to="/member">會員資料</router-link>
         </button>
-        <button v-if="authStore.isLogin !== null">
+        <button @click="toggleAsideMenu" v-if="authStore.isLogin !== null">
           <router-link to="/order">訂單查詢</router-link>
         </button>
-        <button v-if="authStore.isLogin !== null">
+        <button @click="toggleAsideMenu" v-if="authStore.isLogin !== null">
           <router-link to="/cart">購物車</router-link>
         </button>
+        <button id="aside-logout" v-if="authStore.isLogin !== null" @click="handleLogout">
+          <a>登出</a>
+        </button>
+        <button v-if="authStore.isLogin === null" @click="toggleAsideMenu">
+          <router-link to="/login">登入</router-link>
+        </button>
       </section>
-      <button v-if="authStore.isLogin === null" @click="toggleAsideMenu">
-        <router-link to="/login">登入</router-link>
-      </button>
     </aside>
     <a href="#" id="to-top"><img src="../assets/up-arrow.png" alt="" /></a>
   </div>

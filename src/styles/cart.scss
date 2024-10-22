@@ -69,6 +69,14 @@
       align-items: center;
       color: value.$darkBrown;
       margin-bottom: 20px;
+      #same-user {
+        display: flex;
+        align-items: center;
+        input {
+          width: 20px;
+          height: 20px;
+        }
+      }
       input {
         outline: none;
         padding: 5px;

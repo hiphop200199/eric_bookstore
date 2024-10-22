@@ -40,6 +40,8 @@ const handleRegister = ($event) => {
         type="password"
         placeholder="請輸入密碼..."
         v-model="password"
+        pattern="[A-Z]{1,}[a-z]{1,}[0-9]{1,}\W{1,}"
+        title="須結合大小寫英文字母及數字以及特殊符號至少一個"
         required
         minlength="8"
       />
@@ -47,12 +49,14 @@ const handleRegister = ($event) => {
         type="password"
         placeholder="請確認密碼..."
         v-model="password_confirmation"
+        pattern="[A-Z]{1,}[a-z]{1,}[0-9]{1,}\W{1,}"
+        title="須結合大小寫英文字母及數字以及特殊符號至少一個"
         required
         minlength="8"
       />
       <input type="tel" v-model="tel" required placeholder="請輸入電話..." />
       <input type="text" v-model="address" required placeholder="請輸入送貨地址..." />
-      <p id="message" ref="message"></p>
+      <p id="message" ref="message">{{ authStore.message }}</p>
       <div id="buttons">
         <button type="submit">註冊</button>
       </div>

@@ -29,7 +29,7 @@ const htmlDecode = (str) => {
   }
 }
 // getMonthlyNewProducts()
-//getProducts()
+getProducts()
 </script>
 
 <template>

@@ -26,6 +26,10 @@ onMounted(() => {
       receiverName.value = authStore.user.name
       receiverTel.value = authStore.user.phone
       receiverAddress.value = authStore.user.address
+    } else {
+      receiverName.value = ''
+      receiverTel.value = ''
+      receiverAddress.value = ''
     }
   }
 })
@@ -60,7 +64,9 @@ onMounted(() => {
       <h1 id="total" v-if="!cartStore.isLoading">總金額:{{ cartStore.total }}元</h1>
       <h1>收件人資訊</h1>
       <section id="info">
-        <label><input type="checkbox" @change="sameWithUser" ref="same" />同訂購人</label>
+        <label id="same-user"
+          ><input type="checkbox" @change="sameWithUser" ref="same" />同訂購人</label
+        >
         <label for="">姓名：<input type="text" v-model="receiverName" required /></label>
         <label for="">電話：<input type="tel" v-model="receiverTel" required /></label>
         <label for="">地址：<input type="text" v-model="receiverAddress" required /></label>

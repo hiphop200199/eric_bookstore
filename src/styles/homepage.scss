@@ -76,6 +76,7 @@
                 height: 100%;
                 width: 100%;
                 transition: 0.3s;
+                object-fit: contain;
                 &:hover {
                   scale: 1.1;
                 }

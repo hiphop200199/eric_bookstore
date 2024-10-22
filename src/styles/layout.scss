@@ -82,6 +82,10 @@
       width: 100vw;
       opacity: 1;
     }
+    section {
+      display: flex;
+      flex-direction: column;
+    }
     * {
       margin: 10px;
       text-align: end;

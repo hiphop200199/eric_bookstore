@@ -33,6 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
           isLogin.value = sessionStorage.getItem('token')
           memberId.value = sessionStorage.getItem('id')
           router.push({ path: '/' })
+          getUser()
         })
         .catch((err) => console.log(err))
     })
@@ -55,20 +56,19 @@ export const useAuthStore = defineStore('auth', () => {
 
           router.push({ path: '/' })
           getUser()
-          let order = useOrderStore()
-          order.getOrders()
         })
         .catch((err) => {
-          if (err.response.data.message === 'These credentials do not match our records.') {
+          if (
+            err['response']['data']['message'] === 'These credentials do not match our records.'
+          ) {
             message.value = '帳號或密碼有誤'
+            setTimeout(() => (message.value = ''), 2000)
           }
           console.log(err)
         })
     })
   }
   const handleLogout = () => {
-    let order = useOrderStore()
-    let products = useProductStore()
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .post(baseUrl + 'logout')
@@ -76,11 +76,9 @@ export const useAuthStore = defineStore('auth', () => {
           sessionStorage.removeItem('id')
           sessionStorage.removeItem('token')
           sessionStorage.removeItem('user')
-          sessionStorage.removeItem('orders')
           memberId.value = sessionStorage.getItem('id')
           isLogin.value = sessionStorage.getItem('token')
           user.value = sessionStorage.getItem('user')
-          order.orders.value = sessionStorage.getItem('orders')
 
           router.push({ path: '/' })
         })
@@ -104,6 +102,7 @@ export const useAuthStore = defineStore('auth', () => {
       .catch((err) => console.log(err))
   }
   const editUser = (phone, address) => {
+    isLoading.value = true
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .put(baseUrl + 'editUser', {
@@ -115,6 +114,8 @@ export const useAuthStore = defineStore('auth', () => {
           console.log(res)
           sessionStorage.setItem('user', JSON.stringify(res.data))
           user.value = JSON.parse(sessionStorage.getItem('user'))
+          location.reload()
+          isLoading.value = false
         })
         .catch((err) => console.log(err))
     })
@@ -181,8 +182,8 @@ export const useProductStore = defineStore('product', () => {
   const products = ref(JSON.parse(sessionStorage.getItem('products-list')))
   const listUrl = ref(sessionStorage.getItem('list-url'))
   const productsPagination = ref(JSON.parse(sessionStorage.getItem('paginate')))
-  const monthlyNewProducts = ref([])
-  const popularProducts = ref(JSON.parse(sessionStorage.getItem('popular-list')))
+  //const monthlyNewProducts = ref([])
+  const popularProducts = ref([])
   const product = ref({})
   const getProducts = (url = null, text = null) => {
     if (
@@ -221,17 +222,12 @@ export const useProductStore = defineStore('product', () => {
     })
   }
   const getPopularProducts = () => {
-    if (popularProducts.value) {
-      isLoading.value = false
-      return
-    }
     isLoading.value = true
     axios
       .get(baseUrl + 'getPopularProducts')
       .then((res) => {
         console.log(res)
-        sessionStorage.setItem('popular-list', JSON.stringify(res.data))
-        popularProducts.value = JSON.parse(sessionStorage.getItem('popular-list'))
+        popularProducts.value = res.data
         isLoading.value = false
       })
       .catch((err) => console.log(err))
@@ -241,7 +237,7 @@ export const useProductStore = defineStore('product', () => {
     isLoading,
     product,
     products,
-    monthlyNewProducts,
+    // monthlyNewProducts,
     popularProducts,
     productsPagination,
     getProducts,
@@ -256,6 +252,7 @@ export const useCartStore = defineStore('cart', () => {
   const items = ref([])
   const total = ref(0)
   const getItems = () => {
+    isLoading.value = true
     axios
       .get(baseUrl + 'getItems', { params: { id: sessionStorage.getItem('id') } })
       .then((res) => {
@@ -269,6 +266,8 @@ export const useCartStore = defineStore('cart', () => {
       .catch((err) => console.log(err))
   }
   const addItem = (id, mode) => {
+    let product = useProductStore()
+    product.isLoading = true //使用別的store裡的屬性時，直接賦值即可
     isLoading.value = true
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
@@ -278,12 +277,14 @@ export const useCartStore = defineStore('cart', () => {
         })
         .then((res) => {
           console.log(res)
-          isLoading.value = false
+
           if (mode === 'P') {
             router.push({ path: '/cart' })
           } else {
             router.push({ path: '/list' })
           }
+          isLoading.value = false
+          product.isLoading = false
         })
         .catch((err) => console.log(err))
     })
@@ -298,7 +299,6 @@ export const useCartStore = defineStore('cart', () => {
           }
         })
         .then((res) => {
-          isLoading.value = false
           console.log(res)
           window.location.reload()
         })
@@ -314,7 +314,6 @@ export const useCartStore = defineStore('cart', () => {
           amount: amount
         })
         .then((res) => {
-          isLoading.value = false
           window.location.reload()
         })
         .catch((err) => console.log(err))
@@ -363,14 +362,9 @@ export const useCartStore = defineStore('cart', () => {
 
 export const useOrderStore = defineStore('order', () => {
   const isLoading = ref(true)
-  const orders = ref(JSON.parse(sessionStorage.getItem('orders')))
+  const orders = ref([])
   const order = ref([])
   const getOrders = () => {
-    if (orders.value) {
-      isLoading.value = false
-      return
-    }
-
     isLoading.value = true
     axios
       .get(baseUrl + 'getOrders', { params: { id: sessionStorage.getItem('id') } })
@@ -378,8 +372,6 @@ export const useOrderStore = defineStore('order', () => {
         orders.value = res.data
         isLoading.value = false
         console.log(res)
-        sessionStorage.setItem('orders', JSON.stringify(res.data))
-        orders.value = JSON.parse(sessionStorage.getItem('orders'))
       })
       .catch((err) => console.log(err))
   }
