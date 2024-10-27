@@ -1,4 +1,5 @@
 <script setup>
+import LoadingAnimation from '@/components/LoadingAnimation.vue'
 import { useCartStore } from '@/stores/store'
 import { useRoute } from 'vue-router'
 const route = useRoute()
@@ -8,8 +9,9 @@ cartStore.checkoutSuccess(sessionId)
 </script>
 <template>
   <div id="homepage-container">
-    <h1 class="checkout-result-title">結帳成功!</h1>
-    <section id="to-search">
+    <loading-animation v-if="cartStore.isLoading"></loading-animation>
+    <h1 class="checkout-result-title" v-if="!cartStore.isLoading">結帳成功!</h1>
+    <section id="to-search" v-if="!cartStore.isLoading">
       <h3>搜尋</h3>
       <p>尋找最喜歡的那一本書</p>
       <div id="pic-and-link">

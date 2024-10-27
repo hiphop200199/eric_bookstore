@@ -337,13 +337,17 @@ export const useCartStore = defineStore('cart', () => {
     })
   }
   const checkoutSuccess = (id) => {
+    isLoading.value = true
     axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
       axios
         .put(baseUrl + 'success', {
           session_id: id,
           id: sessionStorage.getItem('id')
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res)
+          isLoading.value = false
+        })
         .catch((err) => console.log(err))
     })
   }
