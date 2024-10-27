@@ -19,6 +19,7 @@
     img {
       width: clamp(450px, 50%, 550px);
       height: 60dvh;
+      object-fit: contain;
     }
     #info {
       width: clamp(400px, 45%, 500px);

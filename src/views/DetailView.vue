@@ -1,20 +1,29 @@
 <script setup>
 import LoadingAnimation from '@/components/LoadingAnimation.vue'
-import { useCartStore, useProductStore } from '@/stores/store'
+import { useCartStore, useProductStore, useAuthStore } from '@/stores/store'
 import router from '@/router'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 const productStore = useProductStore()
 const cartStore = useCartStore()
 const route = useRoute()
+const auth = useAuthStore()
 const product = computed(() => productStore.product)
 const bookId = route.params.id
 
 const handlePurchase = (id) => {
-  cartStore.addItem(id, 'P')
+  if (auth.isLogin) {
+    cartStore.addItem(id, 'P')
+  } else {
+    router.push({ path: '/login' })
+  }
 }
 const handleCart = (id) => {
-  cartStore.addItem(id, 'C')
+  if (auth.isLogin) {
+    cartStore.addItem(id, 'C')
+  } else {
+    router.push({ path: '/login' })
+  }
 }
 const getProduct = (id) => {
   productStore.getProduct(id)

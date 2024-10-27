@@ -9,6 +9,7 @@ const receiverName = ref('')
 const receiverTel = ref('')
 const receiverAddress = ref('')
 const same = ref(null)
+const message = ref(null)
 const adjustAmount = (id, amount) => {
   cartStore.adjustAmount(id, amount)
 }
@@ -16,7 +17,13 @@ const removeItem = (id) => {
   cartStore.removeItem(id)
 }
 const handleCheckout = () => {
-  cartStore.handleCheckout(receiverName.value, receiverTel.value, receiverAddress.value)
+  if (receiverName.value === '' || receiverAddress.value === '' || receiverTel.value === '') {
+    message.value.innerText = '請填寫收件人資料.'
+    return
+  } else {
+    message.value.innerText = ''
+    cartStore.handleCheckout(receiverName.value, receiverTel.value, receiverAddress.value)
+  }
 }
 let sameWithUser
 cartStore.getItems()
@@ -70,6 +77,7 @@ onMounted(() => {
         <label for="">姓名：<input type="text" v-model="receiverName" required /></label>
         <label for="">電話：<input type="tel" v-model="receiverTel" required /></label>
         <label for="">地址：<input type="text" v-model="receiverAddress" required /></label>
+        <p id="message" ref="message"></p>
       </section>
       <div id="checkout-box">
         <button id="checkout" @click="handleCheckout">結帳</button>

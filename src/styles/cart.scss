@@ -69,6 +69,11 @@
       align-items: center;
       color: value.$darkBrown;
       margin-bottom: 20px;
+      #message {
+        color: red;
+        margin-block: 20px;
+        text-align: center;
+      }
       #same-user {
         display: flex;
         align-items: center;

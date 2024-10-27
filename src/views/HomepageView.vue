@@ -5,12 +5,10 @@ import { onMounted, ref } from 'vue'
 
 const cardWidth = 300
 let slideDistance = ref(0)
-let scrollY = ref(0)
 const cards = ref([])
 const productStore = useProductStore()
 let slide
 onMounted(() => {
-  window.addEventListener('scroll', () => (scrollY.value = window.scrollY))
   slide = (dir) => {
     dir === 'left' ? (slideDistance.value -= cardWidth) : (slideDistance.value += cardWidth)
     cards.value.style.transform = `translateX(${slideDistance.value}px)`
@@ -26,7 +24,7 @@ productStore.getPopularProducts()
     <h1>熱門商品</h1>
     <loading-animation v-if="productStore.isLoading"></loading-animation>
     <div id="new-items-slider" v-else>
-      <button id="slide-left" @click="slide('left')" v-if="slideDistance > -3040">
+      <button id="slide-left" @click="slide('left')" v-if="slideDistance > -1500">
         <img src="../assets/left-arrow.png" alt="" />
       </button>
       <div id="slider">
