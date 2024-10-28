@@ -10,13 +10,10 @@ const toggleAsideMenu = () => {
   asideMenu.value.classList.toggle('active')
 }
 const handleLogout = () => {
+  toggleAsideMenu()
   authStore.handleLogout()
 }
 console.log(authStore.isLogin)
-onMounted(() => {
-  let asideLogoutBtn = document.getElementById('aside-logout')
-  asideLogoutBtn.addEventListener('click', toggleAsideMenu)
-})
 </script>
 
 <template>

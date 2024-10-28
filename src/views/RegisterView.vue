@@ -10,25 +10,28 @@ const tel = ref('')
 const address = ref('')
 const message = ref(null)
 const isLogin = computed(() => authStore.isLogin)
-const handleRegister = ($event) => {
-  $event.preventDefault()
-  if (password_confirmation.value !== password.value) {
-    message.value.innerText = '密碼不一致'
-    message.value.classList.add('is-error')
-    return false
-  } else {
-    message.value.classList.remove('is-error')
-    message.value.innerText = ''
-    authStore.handleRegister(
-      name.value,
-      account.value,
-      password.value,
-      password_confirmation.value,
-      tel.value,
-      address.value
-    )
+let handleRegister
+onMounted(() => {
+  handleRegister = ($event) => {
+    $event.preventDefault()
+    if (password_confirmation.value !== password.value) {
+      message.value.innerText = '密碼不一致'
+      message.value.classList.add('is-error')
+      return false
+    } else {
+      message.value.classList.remove('is-error')
+      message.value.innerText = ''
+      authStore.handleRegister(
+        name.value,
+        account.value,
+        password.value,
+        password_confirmation.value,
+        tel.value,
+        address.value
+      )
+    }
   }
-}
+})
 </script>
 
 <template>
