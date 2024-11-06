@@ -10,6 +10,9 @@ const toggleAsideMenu = () => {
   asideMenu.value.classList.toggle('active')
 }
 const handleLogout = () => {
+  authStore.handleLogout()
+}
+const handleAsideLogout = () => {
   toggleAsideMenu()
   authStore.handleLogout()
 }
@@ -19,17 +22,13 @@ console.log(authStore.isLogin)
 <template>
   <div id="layout">
     <header>
-      <a href="https://hiphop200199.github.io/eric_bookstore/"
-        ><img src="../assets/book.png" alt="logo"
-      /></a>
+      <router-link to="/"><img src="../assets/book.png" alt="logo" /></router-link>
       <nav>
         <section>
           <router-link to="/list" title="商品查詢"
             ><img src="https://cdn-icons-png.flaticon.com/128/1621/1621643.png" alt=""
           /></router-link>
-          <button v-if="authStore.isLogin !== null" @click="handleLogout">
-            <img src="../assets/log-out.png" alt="" id="logout" title="登出" />
-          </button>
+
           <router-link v-if="authStore.isLogin !== null" to="/member" title="會員資料"
             ><img src="../assets/user.png" alt="" id="user"
           /></router-link>
@@ -40,6 +39,9 @@ console.log(authStore.isLogin)
             <img src="../assets/shopping-cart.png" alt="" id="cart" />
             <!-- <span id="cart-amount" :class="">(1)</span> -->
           </router-link>
+          <button v-if="authStore.isLogin !== null" @click="handleLogout">
+            <img src="../assets/log-out.png" alt="" id="logout" title="登出" />
+          </button>
         </section>
         <router-link to="/login" title="登入" v-if="authStore.isLogin === null"
           ><img src="../assets/log-in.png" alt="" id="login"
@@ -76,7 +78,7 @@ console.log(authStore.isLogin)
         <button @click="toggleAsideMenu" v-if="authStore.isLogin !== null">
           <router-link to="/cart">購物車</router-link>
         </button>
-        <button id="aside-logout" v-if="authStore.isLogin !== null" @click="handleLogout">
+        <button id="aside-logout" v-if="authStore.isLogin !== null" @click="handleAsideLogout">
           <a>登出</a>
         </button>
         <button v-if="authStore.isLogin === null" @click="toggleAsideMenu">

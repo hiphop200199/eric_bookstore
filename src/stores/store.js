@@ -182,34 +182,34 @@ export const useAuthStore = defineStore('auth', () => {
 
 export const useProductStore = defineStore('product', () => {
   const isLoading = ref(true)
-  const products = ref(JSON.parse(sessionStorage.getItem('products-list')))
-  const listUrl = ref(sessionStorage.getItem('list-url'))
-  const productsPagination = ref(JSON.parse(sessionStorage.getItem('paginate')))
+  const products = ref([]) /* ref(JSON.parse(sessionStorage.getItem('products-list'))) */
+  //const listUrl = ref(sessionStorage.getItem('list-url'))
+  const productsPagination = ref({}) /* ref(JSON.parse(sessionStorage.getItem('paginate'))) */
   //const monthlyNewProducts = ref([])
   const popularProducts = ref([])
   const product = ref({})
   const getProducts = (url = null, text = null) => {
-    if (
+    /*  if (
       (url !== null && url === listUrl.value) ||
       (url === null && listUrl.value !== null && text === null)
     ) {
       isLoading.value = false
       return
-    } else {
-      let finalUrl = url || baseUrl + 'getProducts?page=1'
-      if (text) finalUrl += '&text=' + text
-      isLoading.value = true
-      axios.get(finalUrl).then((res) => {
-        isLoading.value = false
-        console.log(res)
-        sessionStorage.setItem('products-list', JSON.stringify(res.data.data))
-        products.value = JSON.parse(sessionStorage.getItem('products-list'))
-        sessionStorage.setItem('paginate', JSON.stringify(res.data))
-        productsPagination.value = JSON.parse(sessionStorage.getItem('paginate'))
-        sessionStorage.setItem('list-url', finalUrl)
-        listUrl.value = sessionStorage.getItem('list-url')
-      })
-    }
+    } else { */
+    let finalUrl = url || baseUrl + 'getProducts?page=1'
+    if (text) finalUrl += '&text=' + text
+    isLoading.value = true
+    axios.get(finalUrl).then((res) => {
+      isLoading.value = false
+      console.log(res)
+      // sessionStorage.setItem('products-list', JSON.stringify(res.data.data))
+      products.value = res.data.data
+      /* JSON.parse(sessionStorage.getItem('products-list')) */
+      //  sessionStorage.setItem('paginate', JSON.stringify(res.data))
+      productsPagination.value = res.data /*  JSON.parse(sessionStorage.getItem('paginate')) */
+      //   sessionStorage.setItem('list-url', finalUrl)
+      //   listUrl.value = sessionStorage.getItem('list-url')
+    })
   }
   /* const getMonthlyNewProducts = () => {
     isLoading.value = true
@@ -236,7 +236,7 @@ export const useProductStore = defineStore('product', () => {
       .catch((err) => console.log(err))
   }
   return {
-    listUrl,
+    // listUrl,
     isLoading,
     product,
     products,
