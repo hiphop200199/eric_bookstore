@@ -1,12 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import router from '@/router'
-import axios from 'axios'
-
-axios.defaults.withCredentials = true
-axios.defaults.withXSRFToken = true
-
-const baseUrl = 'http://localhost:8000/'
+import myAxios from './my-axios'
 
 export const useAuthStore = defineStore('auth', () => {
   const memberId = ref(sessionStorage.getItem('id'))
@@ -16,77 +11,70 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(JSON.parse(sessionStorage.getItem('user')))
   const handleRegister = (name, email, password, passwordConfirm, tel, address) => {
     message.value = '請稍候...'
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .post(baseUrl + 'register', {
-          name: name,
-          email: email,
-          password: password,
-          password_confirmation: passwordConfirm,
-          tel: tel,
-          address: address
-        })
-        .then((res) => {
-          message.value = ''
-          sessionStorage.setItem('token', document.cookie.slice(document.cookie.indexOf('=') + 1))
-          sessionStorage.setItem('id', res.data[0].id)
-          isLogin.value = sessionStorage.getItem('token')
-          memberId.value = sessionStorage.getItem('id')
-          router.push({ path: '/' })
-          //location.href = location.origin + '/eric_bookstore/'
-          getUser()
-        })
-        .catch((err) => console.log(err))
-    })
+
+    myAxios
+      .post('/api/register', {
+        name: name,
+        email: email,
+        password: password,
+        password_confirmation: passwordConfirm,
+        tel: tel,
+        address: address
+      })
+      .then((res) => {
+        message.value = ''
+        sessionStorage.setItem('token', document.cookie.slice(document.cookie.indexOf('=') + 1))
+        sessionStorage.setItem('id', res.data[0].id)
+        isLogin.value = sessionStorage.getItem('token')
+        memberId.value = sessionStorage.getItem('id')
+        router.push({ path: '/' })
+        //location.href = location.origin + '/eric_bookstore/'
+        getUser()
+      })
+      .catch((err) => console.log(err))
   }
   const handleLogIn = (email, password) => {
     message.value = '請稍候...'
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .post(baseUrl + 'login', {
-          email: email,
-          password: password
-        })
-        .then((res) => {
-          message.value = ''
-          sessionStorage.setItem('token', document.cookie.slice(document.cookie.indexOf('=') + 1))
-          sessionStorage.setItem('id', res.data[0].id)
-          memberId.value = sessionStorage.getItem('id')
-          isLogin.value = sessionStorage.getItem('token')
-          console.log(res)
+    myAxios
+      .post('/api/login', {
+        email: email,
+        password: password
+      })
+      .then((res) => {
+        message.value = ''
+        sessionStorage.setItem('token', document.cookie.slice(document.cookie.indexOf('=') + 1))
+        sessionStorage.setItem('id', res.data[0].id)
+        memberId.value = sessionStorage.getItem('id')
+        isLogin.value = sessionStorage.getItem('token')
+        console.log(res)
 
-          router.push({ path: '/' })
-          //location.href = location.origin + '/eric_bookstore/'
-          getUser()
-        })
-        .catch((err) => {
-          if (
-            err['response']['data']['message'] === 'These credentials do not match our records.'
-          ) {
-            message.value = '帳號或密碼有誤'
-            setTimeout(() => (message.value = ''), 2000)
-          }
-          console.log(err)
-        })
-    })
+        router.push({ path: '/' })
+        //location.href = location.origin + '/eric_bookstore/'
+        getUser()
+      })
+      .catch((err) => {
+        if (err['response']['data']['message'] === 'These credentials do not match our records.') {
+          message.value = '帳號或密碼有誤'
+          setTimeout(() => (message.value = ''), 2000)
+        }
+        console.log(err)
+      })
   }
   const handleLogout = () => {
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .post(baseUrl + 'logout')
-        .then(() => {
-          sessionStorage.removeItem('id')
-          sessionStorage.removeItem('token')
-          sessionStorage.removeItem('user')
-          memberId.value = sessionStorage.getItem('id')
-          isLogin.value = sessionStorage.getItem('token')
-          user.value = sessionStorage.getItem('user')
+    myAxios
+      .post('/api/logout')
+      .then(() => {
+        sessionStorage.removeItem('id')
+        sessionStorage.removeItem('token')
+        sessionStorage.removeItem('user')
+        memberId.value = sessionStorage.getItem('id')
+        isLogin.value = sessionStorage.getItem('token')
+        user.value = sessionStorage.getItem('user')
 
-          //router.push({ path: '/' })
-          location.href = location.origin + '/eric_bookstore/'
-        })
-        .catch((err) => console.log(err))
-    })
+        //router.push({ path: '/' })
+        location.href = location.origin + '/eric_bookstore/'
+      })
+      .catch((err) => console.log(err))
   }
   const getUser = () => {
     if (user.value) {
@@ -94,8 +82,8 @@ export const useAuthStore = defineStore('auth', () => {
       return
     }
     isLoading.value = true
-    axios
-      .get(baseUrl + 'getUser', { params: { id: memberId.value } })
+    myAxios
+      .get('/api/getUser', { params: { id: memberId.value } })
       .then((res) => {
         isLoading.value = false
         console.log(res)
@@ -106,63 +94,54 @@ export const useAuthStore = defineStore('auth', () => {
   }
   const editUser = (phone, address) => {
     isLoading.value = true
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .put(baseUrl + 'editUser', {
-          id: memberId.value,
-          phone: phone,
-          address: address
-        })
-        .then((res) => {
-          console.log(res)
-          sessionStorage.setItem('user', JSON.stringify(res.data))
-          user.value = JSON.parse(sessionStorage.getItem('user'))
-          location.reload()
-          isLoading.value = false
-        })
-        .catch((err) => console.log(err))
-    })
+    myAxios
+      .put('/api/editUser', {
+        id: memberId.value,
+        phone: phone,
+        address: address
+      })
+      .then((res) => {
+        console.log(res)
+        sessionStorage.setItem('user', JSON.stringify(res.data))
+        user.value = JSON.parse(sessionStorage.getItem('user'))
+        location.reload()
+        isLoading.value = false
+      })
+      .catch((err) => console.log(err))
   }
   const forgotPassword = (email) => {
     message.value = '請稍候...'
-    axios
-      .get(baseUrl + 'sanctum/csrf-cookie')
-      .then(() => {
-        axios
-          .post(baseUrl + 'forgot-password', {
-            email: email
-          })
-          .then((res) => {
-            message.value = res.data.status
-            console.log(res)
-            setTimeout(() => (message.value = ''), 3000)
-          })
-          .catch((err) => console.log(err))
+    myAxios
+      .post('/api/forgot-password', {
+        email: email
+      })
+      .then((res) => {
+        message.value = res.data.status
+        console.log(res)
+        setTimeout(() => (message.value = ''), 3000)
       })
       .catch((err) => console.log(err))
   }
   const passwordReset = (token, email, password, passwordConfirm) => {
     message.value = '請稍候...'
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .post(baseUrl + 'reset-password', {
-          token: token,
-          email: email,
-          password: password,
-          password_confirmation: passwordConfirm
-        })
-        .then((res) => {
-          message.value = res.data.status
-          console.log(res)
-          setTimeout(() => {
-            message.value = ''
-            router.push({ path: '/' })
-          }, 3000)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    })
+    myAxios
+      .post('/api/reset-password', {
+        token: token,
+        email: email,
+        password: password,
+        password_confirmation: passwordConfirm
+      })
+      .then((res) => {
+        message.value = res.data.status
+        console.log(res)
+        setTimeout(() => {
+          message.value = ''
+          router.push({ path: '/' })
+        }, 3000)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   return {
     user,
@@ -196,10 +175,10 @@ export const useProductStore = defineStore('product', () => {
       isLoading.value = false
       return
     } else { */
-    let finalUrl = url || baseUrl + 'getProducts?page=1'
+    let finalUrl = url || '/api/getProducts?page=1'
     if (text) finalUrl += '&text=' + text
     isLoading.value = true
-    axios.get(finalUrl).then((res) => {
+    myAxios.get(finalUrl).then((res) => {
       isLoading.value = false
       console.log(res)
       // sessionStorage.setItem('products-list', JSON.stringify(res.data.data))
@@ -219,15 +198,15 @@ export const useProductStore = defineStore('product', () => {
   } */
   const getProduct = (index) => {
     isLoading.value = true
-    axios.get(baseUrl + 'getProduct', { params: { id: index } }).then((res) => {
+    myAxios.get('/api/getProduct', { params: { id: index } }).then((res) => {
       product.value = res.data
       isLoading.value = false
     })
   }
   const getPopularProducts = () => {
     isLoading.value = true
-    axios
-      .get(baseUrl + 'getPopularProducts')
+    myAxios
+      .get('/api/getPopularProducts')
       .then((res) => {
         console.log(res)
         popularProducts.value = res.data
@@ -256,8 +235,8 @@ export const useCartStore = defineStore('cart', () => {
   const total = ref(0)
   const getItems = () => {
     isLoading.value = true
-    axios
-      .get(baseUrl + 'getItems', { params: { id: sessionStorage.getItem('id') } })
+    myAxios
+      .get('/api/getItems', { params: { id: sessionStorage.getItem('id') } })
       .then((res) => {
         items.value = res.data
         total.value = res.data.reduce(function (a, c) {
@@ -272,87 +251,77 @@ export const useCartStore = defineStore('cart', () => {
     let product = useProductStore()
     product.isLoading = true //使用別的store裡的屬性時，直接賦值即可
     isLoading.value = true
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .post(baseUrl + 'addItem', {
-          id: id,
-          memberId: sessionStorage.getItem('id')
-        })
-        .then((res) => {
-          console.log(res)
+    myAxios
+      .post('/api/addItem', {
+        id: id,
+        memberId: sessionStorage.getItem('id')
+      })
+      .then((res) => {
+        console.log(res)
 
-          if (mode === 'P') {
-            router.push({ path: '/cart' })
-          } else {
-            router.push({ path: '/list' })
-          }
-          isLoading.value = false
-          product.isLoading = false
-        })
-        .catch((err) => console.log(err))
-    })
+        if (mode === 'P') {
+          router.push({ path: '/cart' })
+        } else {
+          router.push({ path: '/list' })
+        }
+        isLoading.value = false
+        product.isLoading = false
+      })
+      .catch((err) => console.log(err))
   }
   const removeItem = (id) => {
     isLoading.value = true
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .delete(baseUrl + 'removeItem', {
-          params: {
-            id: id
-          }
-        })
-        .then((res) => {
-          console.log(res)
-          window.location.reload()
-        })
-        .catch((err) => console.log(err))
-    })
+    myAxios
+      .delete('/api/removeItem', {
+        params: {
+          id: id
+        }
+      })
+      .then((res) => {
+        console.log(res)
+        window.location.reload()
+      })
+      .catch((err) => console.log(err))
   }
   const adjustAmount = (id, amount) => {
     isLoading.value = true
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .put(baseUrl + 'editItem', {
-          id: id,
-          amount: amount
-        })
-        .then((res) => {
-          window.location.reload()
-        })
-        .catch((err) => console.log(err))
-    })
+    myAxios
+      .put('/api/editItem', {
+        id: id,
+        amount: amount
+      })
+      .then((res) => {
+        window.location.reload()
+      })
+      .catch((err) => console.log(err))
   }
   const handleCheckout = (name, tel, address) => {
     isLoading.value = true
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .post(baseUrl + 'checkout', {
-          id: sessionStorage.getItem('id'),
-          receiverName: name,
-          receiverTel: tel,
-          receiverAddress: address
-        })
-        .then((res) => {
-          console.log(res)
-          window.location.href = res.data.url
-        })
-        .catch((err) => console.log(err))
-    })
+    myAxios
+      .post('/api/checkout', {
+        id: sessionStorage.getItem('id'),
+        receiverName: name,
+        receiverTel: tel,
+        receiverAddress: address
+      })
+      .then((res) => {
+        console.log(res)
+        window.location.href = res.data.url
+      })
+      .catch((err) => console.log(err))
   }
   const checkoutSuccess = (id) => {
     isLoading.value = true
-    axios.get(baseUrl + 'sanctum/csrf-cookie').then(() => {
-      axios
-        .put(baseUrl + 'success', {
-          session_id: id,
-          id: sessionStorage.getItem('id')
-        })
-        .then((res) => {
-          console.log(res)
-          isLoading.value = false
-        })
-        .catch((err) => console.log(err))
-    })
+    myAxios
+      .put('/api/success', {
+        session_id: id,
+        id: sessionStorage.getItem('id')
+      })
+      .then((res) => {
+        console.log(res)
+        isLoading.value = false
+      })
+      .catch((err) => console.log(err))
   }
   return {
     isLoading,
@@ -373,8 +342,8 @@ export const useOrderStore = defineStore('order', () => {
   const order = ref([])
   const getOrders = () => {
     isLoading.value = true
-    axios
-      .get(baseUrl + 'getOrders', { params: { id: sessionStorage.getItem('id') } })
+    myAxios
+      .get('/api/getOrders', { params: { id: sessionStorage.getItem('id') } })
       .then((res) => {
         orders.value = res.data
         isLoading.value = false
@@ -384,8 +353,8 @@ export const useOrderStore = defineStore('order', () => {
   }
   const getOrder = (id) => {
     isLoading.value = true
-    axios
-      .get(baseUrl + 'getOrder', { params: { id: id } })
+    myAxios
+      .get('/api/getOrder', { params: { id: id } })
       .then((res) => {
         order.value = res.data
         isLoading.value = false
