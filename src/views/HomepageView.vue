@@ -50,68 +50,24 @@ productStore.getPopularProducts()
     <section id="feedbacks">
       <div class="feedback-card">
         <img src="../assets/woman-8592765_640.jpg" alt="" />
-        <p>Lorem ipsum dolor sit amet consectetur.</p>
+        <p>喜歡休南洞書店.</p>
       </div>
       <div class="feedback-card">
         <img src="../assets/woman-8592765_640.jpg" alt="" />
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <p>色彩心理學很實用.</p>
       </div>
       <div class="feedback-card">
         <img src="../assets/woman-8592765_640.jpg" alt="" />
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur tempora libero
-        consequuntur quod quisquam nemo animi dolore ullam repellat tenetur harum sed, ab dolorem
-        reiciendis iusto cum facilis inventore facere.
+      色彩心理學值得買!.
       </div>
       <div class="feedback-card">
         <img src="../assets/man-1690965_640.jpg" alt="" />
-        <p>Lorem.</p>
+        <p>喜歡在eric_bookstore買，選擇很多.</p>
       </div>
+     
       <div class="feedback-card">
         <img src="../assets/woman-8592765_640.jpg" alt="" />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam sequi consequatur
-          inventore.
-        </p>
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/man-1690965_640.jpg" alt="" />
-        Lorem ipsum dolor sit amet consectetur.
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/woman-8592765_640.jpg" alt="" />
-        <p>Lorem, ipsum.</p>
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/man-1690965_640.jpg" alt="" />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, sed? Deserunt aliquid,
-          in incidunt dolore excepturi a laborum numquam nesciunt.
-        </p>
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/woman-8592765_640.jpg" alt="" />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum rem hic perferendis
-          libero ipsa culpa officia. Delectus sapiente alias aliquam, amet accusantium doloremque
-          natus corporis dolor perspiciatis voluptates, quibusdam reiciendis dolorem inventore sint
-          repudiandae, nisi architecto qui odit .
-        </p>
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/man-1690965_640.jpg" alt="" />
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/man-1690965_640.jpg" alt="" />
-        <p>Lorem, ipsum dolor.</p>
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/man-1690965_640.jpg" alt="" />
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Necessitatibus, fuga.</p>
-      </div>
-      <div class="feedback-card">
-        <img src="../assets/woman-8592765_640.jpg" alt="" />
-        <p>Lorem, ipsum dolor.</p>
+        <p>出貨很快.</p>
       </div>
     </section>
     <section id="to-search">
