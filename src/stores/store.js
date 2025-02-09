@@ -71,8 +71,8 @@ export const useAuthStore = defineStore('auth', () => {
         isLogin.value = sessionStorage.getItem('token')
         user.value = sessionStorage.getItem('user')
 
-        //router.push({ path: '/' })
-        location.href = location.origin + '/eric_bookstore/'
+        router.push({ path: '/' })
+        //location.href = location.origin + '/eric_bookstore/'
       })
       .catch((err) => console.log(err))
   }
