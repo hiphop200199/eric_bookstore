@@ -58,13 +58,13 @@ productStore.getPopularProducts()
       </div>
       <div class="feedback-card">
         <img src="../assets/woman-8592765_640.jpg" alt="" />
-      色彩心理學值得買!.
+        色彩心理學值得買!.
       </div>
       <div class="feedback-card">
         <img src="../assets/man-1690965_640.jpg" alt="" />
         <p>喜歡在eric_bookstore買，選擇很多.</p>
       </div>
-     
+
       <div class="feedback-card">
         <img src="../assets/woman-8592765_640.jpg" alt="" />
         <p>出貨很快.</p>
@@ -80,3 +80,9 @@ productStore.getPopularProducts()
     </section>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.product-card {
+  width: 300px;
+}
+</style>
