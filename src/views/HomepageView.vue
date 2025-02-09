@@ -80,9 +80,3 @@ productStore.getPopularProducts()
     </section>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.product-card {
-  width: 300px;
-}
-</style>

@@ -61,7 +61,7 @@
             border: 2px solid transparent;
             box-shadow: 0px 0px 3px 1px transparent;
             transition: 0.3s;
-            width: value.$cardWidth;
+            width: 300px;
             height: 400px;
             &:hover {
               border-color: value.$darkBrown;
