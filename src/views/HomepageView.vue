@@ -62,7 +62,7 @@ productStore.getPopularProducts()
       </div>
       <div class="feedback-card">
         <img src="../assets/man-1690965_640.jpg" alt="" />
-        <p>喜歡在eric_bookstore買，選擇很多.</p>
+        <p>選擇很多.</p>
       </div>
 
       <div class="feedback-card">
