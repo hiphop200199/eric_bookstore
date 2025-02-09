@@ -22,7 +22,7 @@ console.log(authStore.isLogin)
 <template>
   <div id="layout">
     <header>
-      <router-link to="/"><img src="../assets/book.png" alt="logo" /></router-link>
+      <a href="https://eric-bookstore.vercel.app/"><img src="../assets/book.png" alt="logo" /></a>
       <nav>
         <section>
           <router-link to="/list" title="商品查詢"
